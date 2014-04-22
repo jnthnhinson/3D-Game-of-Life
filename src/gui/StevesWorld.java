@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import src.graphics.KeyHandler;
+
 @SuppressWarnings("serial")
 public class StevesWorld extends JPanel implements ActionListener{
 
