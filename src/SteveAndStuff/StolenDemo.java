@@ -1,4 +1,4 @@
-package SteveAndStuff;
+package src.SteveAndStuff;
 import java.io.*;
 
 import java.awt.*;

@@ -1,4 +1,4 @@
-package SteveAndStuff;
+package src.SteveAndStuff;
 import com.threed.jpct.Camera;
 
 public class Steve extends Camera{

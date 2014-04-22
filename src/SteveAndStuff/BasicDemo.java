@@ -1,4 +1,4 @@
-package SteveAndStuff;
+package src.SteveAndStuff;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.File;

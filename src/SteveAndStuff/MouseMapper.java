@@ -1,4 +1,4 @@
-package SteveAndStuff;
+package src.SteveAndStuff;
 import org.lwjgl.input.Mouse;
 import com.threed.jpct.FrameBuffer;
 

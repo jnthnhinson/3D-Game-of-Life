@@ -1,4 +1,4 @@
-package data_structures;
+package src.data_structures;
 
 public class Cell {
 

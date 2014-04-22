@@ -1,4 +1,4 @@
-package data_structures;
+package src.data_structures;
 
 public enum CellSize {
 	SMALL(1), MEDIUM(2), LARGE(3);
