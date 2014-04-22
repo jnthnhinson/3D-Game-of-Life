@@ -63,19 +63,30 @@ public class CameraTest extends JFrame{
 		this.addMouseMotionListener(mh);
 	}
 
-	public void addBlock(){
+	public void addBlockRight(){
 		Object3D cube = this.createCube();
 		SimpleVector x = cube.getXAxis();
 		SimpleVector z = cube.getZAxis();
-		x.scalarMul((float)10);
-		z.scalarMul((float)10);
+		x.scalarMul((float)6);
+		z.scalarMul((float)6);
 		cube.translate(x);
 		cube.translate(z);
 		cubes.add(cube);
 		world.addObject(cube);
 	}
 
-
+	public void addBlockLeft(){
+		Object3D cube = this.createCube();
+		SimpleVector x = cube.getXAxis();
+		SimpleVector z = cube.getZAxis();
+		x.scalarMul((float)-6);
+		z.scalarMul((float)-6);
+		cube.translate(x);
+		cube.translate(z);
+		cubes.add(cube);
+		world.addObject(cube);
+	}
+	
 	public void toggleCursor(){
 		if(this.showCursor == false){
 			showCursor = true;

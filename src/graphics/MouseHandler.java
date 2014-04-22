@@ -62,7 +62,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	//~~~~~~~~~~~~~~~~mouse listener methods~~~~~~~~~~~~~~~~~~~~~~~//
 
 	@Override
-	public void mouseClicked(MouseEvent e) { this.camTest.addBlock();}
+	public void mouseClicked(MouseEvent e) { }
 	@Override
 	public void mouseEntered(MouseEvent e) { }
 	@Override
@@ -79,9 +79,9 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 		}
 	}
 	@Override
-	public void mouseReleased(MouseEvent e) { }
+	public void mouseReleased(MouseEvent e) { this.camTest.addBlockRight(); }
 	@Override
-	public void mousePressed(MouseEvent e) { }
+	public void mousePressed(MouseEvent e) { this.camTest.addBlockLeft(); }
 
 
 	public void resetMousePositions(){
