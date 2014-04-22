@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/export/home/f11/hinsonjl/workspace/jpct/lib/lwjgl-2.9.1/jar/lwjgl.jar"/>
+	<classpathentry kind="lib" path="/export/home/f11/hinsonjl/workspace/jpct/lib/lwjgl-2.9.1/jar/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="/export/home/f11/hinsonjl/workspace/jpct/lib/jpct/jpct.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
