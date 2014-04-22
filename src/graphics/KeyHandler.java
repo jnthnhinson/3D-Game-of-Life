@@ -9,7 +9,7 @@ import javax.swing.Timer;
 
 public class KeyHandler implements KeyListener, ActionListener {
 	private int W, A, S, D, SPACE, ESC, SHIFT;
-	private boolean left = false, right = false, forward = false, back = false, down = false, space = false, esc = false;
+	private boolean left = false, right = false, forward = false, back = false, shift = false, space = false, esc = false;
 
 	private Timer timer;
 	private CameraTest camTest;
@@ -27,9 +27,9 @@ public class KeyHandler implements KeyListener, ActionListener {
 		A = KeyEvent.VK_A;
 		S = KeyEvent.VK_S;
 		D = KeyEvent.VK_D;
+		ESC = KeyEvent.VK_ESCAPE;
 		SPACE = KeyEvent.VK_SPACE;
 		SHIFT = KeyEvent.VK_SHIFT;
-		ESC = KeyEvent.VK_ESCAPE;
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 			this.camTest.moveCamera("B");
 		} if(space == true){
 			this.camTest.moveCamera("U");
-		} if(down == true){
+		} if(shift == true){
 			this.camTest.moveCamera("D");
 		}
 	}
@@ -57,7 +57,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == W) {forward = true; }
 		if (key == S) {back = true; }
 		if (key == SPACE) {space = true; }
-		if (key == SHIFT) {down = true; }
+		if (key == SHIFT) {shift = true; }
 		if (key == ESC) { this.camTest.toggleCursor(); }
 	}
 	@Override
@@ -68,7 +68,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == W) {forward = false; }
 		if (key == S) {back = false; }
 		if (key == SPACE) {space = false; }
-		if (key == SHIFT) {down = false; }
+		if (key == SHIFT) {shift = false; }
 	}
 	@Override
 	public void keyTyped(KeyEvent e){ }

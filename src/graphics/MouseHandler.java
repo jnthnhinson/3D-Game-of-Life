@@ -12,17 +12,14 @@ import javax.swing.Timer;
 
 public class MouseHandler extends MouseMotionAdapter implements MouseListener, ActionListener{
 	CameraTest camTest;
+	Timer timer;
 	boolean stopped = false;
-
-	int degree;
 	int lastMousePosX, lastMousePosY;
 	int mouseOffsetX, mouseOffsetY;
-	int curPosX, curPosY;
-	Timer timer;
 
 	public MouseHandler(CameraTest ct){
 		this.camTest = ct;
-		this.timer = new Timer(3, this);
+		this.timer = new Timer(5, this);
 		this.timer.start();
 	}
 
@@ -34,30 +31,19 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	@Override
 	public void mouseMoved(MouseEvent e){
 		if(stopped == false){
-			updateCurPos(e);
 			updateMouseMovement(e);
 			this.camTest.rotateView(mouseOffsetX, mouseOffsetY);
 		}
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e){	
-		//		updateMouseMovement(e);
-		//		this.camTest.rotateView(mouseOffsetX, mouseOffsetY);
-	}
+	public void mouseDragged(MouseEvent e){	}
 
 	public void updateMouseMovement(MouseEvent e){
-		updateCurPos(e);
 		updateLastPos(e);
 		updateMouseOffset(e);
 		setLastToCurrent(e);		
 	}
-
-	public void updateCurPos(MouseEvent e){
-		curPosX = e.getX();
-		curPosY = e.getY();
-	}
-
 	public void updateLastPos(MouseEvent e){
 		if(lastMousePosX == 0 || lastMousePosY == 0){
 			lastMousePosX = e.getX();
@@ -76,7 +62,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	//~~~~~~~~~~~~~~~~mouse listener methods~~~~~~~~~~~~~~~~~~~~~~~//
 
 	@Override
-	public void mouseClicked(MouseEvent e) { }
+	public void mouseClicked(MouseEvent e) { this.camTest.addBlock();}
 	@Override
 	public void mouseEntered(MouseEvent e) { }
 	@Override
@@ -93,12 +79,9 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 		}
 	}
 	@Override
-	public void mouseReleased(MouseEvent e) { 
-		resetMousePositions();
-	}
+	public void mouseReleased(MouseEvent e) { }
 	@Override
-	public void mousePressed(MouseEvent e) {
-	}
+	public void mousePressed(MouseEvent e) { }
 
 
 	public void resetMousePositions(){
@@ -111,7 +94,5 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	//~~~~~~~~~~~~~~~~~~action listener~~~~~~~~~~~~~~~~~~~~~~~~//
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-
-	}
+	public void actionPerformed(ActionEvent arg0) { }
 }
