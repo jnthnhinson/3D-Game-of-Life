@@ -1,9 +1,13 @@
 package src.graphics;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 import com.threed.jpct.*;
@@ -16,6 +20,9 @@ public class CameraTest extends JFrame{
 	private FrameBuffer buffer;
 	private Object3D cube;
 	private Object3D cone;
+	private boolean showCursor = false;
+	private MouseHandler mh;
+	private KeyHandler kh;
 	private Camera cam;
 
 	public CameraTest() throws Exception {
@@ -42,17 +49,40 @@ public class CameraTest extends JFrame{
 		cam.lookAt(cube.getTransformedCenter());
 
 		initListeners();
+		hideCursor();
 	}
 	
 	private void initListeners(){
-		KeyHandler k = new KeyHandler(this);
-		MouseHandler m = new MouseHandler(this);
+		kh = new KeyHandler(this);
+		mh = new MouseHandler(this);
 		
-		this.addKeyListener(k);
-		this.addMouseListener(m);
-		this.addMouseMotionListener(m);
+		this.addKeyListener(kh);
+		this.addMouseListener(mh);
+		this.addMouseMotionListener(mh);
 	}
 
+	
+	public void toggleCursor(){
+		if(this.showCursor == false){
+			showCursor = true;
+			showCursor();		
+		}
+		else if(this.showCursor == true){
+			showCursor = false;
+			hideCursor();
+		}
+		mh.toggleListener();
+	}
+	
+	public void hideCursor(){
+		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+
+		this.getContentPane().setCursor(blankCursor);
+	}
+	public void showCursor(){
+		this.getContentPane().setCursor(Cursor.getDefaultCursor());
+	}
 
 	private void loop() throws Exception {
 		buffer = new FrameBuffer(800, 600, FrameBuffer.SAMPLINGMODE_NORMAL);
@@ -63,7 +93,7 @@ public class CameraTest extends JFrame{
 			world.draw(buffer);
 			buffer.update();
 			buffer.display(getGraphics());
-			Thread.sleep(10);
+			Thread.sleep(1);
 		}
 		buffer.disableRenderer(IRenderer.RENDERER_OPENGL);
 		buffer.dispose();

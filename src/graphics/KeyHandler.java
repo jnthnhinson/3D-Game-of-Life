@@ -58,6 +58,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == S) {back = true; }
 		if (key == SPACE) {space = true; }
 		if (key == SHIFT) {down = true; }
+		if (key == ESC) { this.camTest.toggleCursor(); }
 	}
 	@Override
 	public void keyReleased(KeyEvent e){

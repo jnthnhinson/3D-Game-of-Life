@@ -1,18 +1,23 @@
 package src.graphics;
 
+import java.awt.Point;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+
 import javax.swing.Timer;
 
 public class MouseHandler extends MouseMotionAdapter implements MouseListener, ActionListener{
 	CameraTest camTest;
-	boolean attacking = false;
+	boolean stopped = false;
+
 	int degree;
 	int lastMousePosX, lastMousePosY;
 	int mouseOffsetX, mouseOffsetY;
+	int curPosX, curPosY;
 	Timer timer;
 
 	public MouseHandler(CameraTest ct){
@@ -21,27 +26,51 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 		this.timer.start();
 	}
 
+	public void toggleListener(){
+		if(stopped == true){ stopped = false;
+		}else { stopped = true; }
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e){
+		if(stopped == false){
+			updateCurPos(e);
+			updateMouseMovement(e);
+			this.camTest.rotateView(mouseOffsetX, mouseOffsetY);
+		}
+	}
+
 	@Override
 	public void mouseDragged(MouseEvent e){	
+		//		updateMouseMovement(e);
+		//		this.camTest.rotateView(mouseOffsetX, mouseOffsetY);
+	}
 
+	public void updateMouseMovement(MouseEvent e){
+		updateCurPos(e);
+		updateLastPos(e);
+		updateMouseOffset(e);
+		setLastToCurrent(e);		
+	}
+
+	public void updateCurPos(MouseEvent e){
+		curPosX = e.getX();
+		curPosY = e.getY();
+	}
+
+	public void updateLastPos(MouseEvent e){
 		if(lastMousePosX == 0 || lastMousePosY == 0){
 			lastMousePosX = e.getX();
 			lastMousePosY = e.getY();
-		}
-
-
-		int newMousePosX = e.getX();
-		int newMousePosY = e.getY();
-
-		mouseOffsetX = newMousePosX - lastMousePosX;
-		mouseOffsetY = lastMousePosY - newMousePosY;
-		
-		this.camTest.rotateView(mouseOffsetX, mouseOffsetY);
-		
-		lastMousePosX = newMousePosX;
-		lastMousePosY = newMousePosY;
-
-
+		}		
+	}
+	public void updateMouseOffset(MouseEvent e){
+		mouseOffsetX = e.getX() - lastMousePosX;
+		mouseOffsetY = lastMousePosY - e.getY();
+	}
+	public void setLastToCurrent(MouseEvent e){
+		lastMousePosX = e.getX();
+		lastMousePosY = e.getY();
 	}
 
 	//~~~~~~~~~~~~~~~~mouse listener methods~~~~~~~~~~~~~~~~~~~~~~~//
@@ -51,7 +80,18 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	@Override
 	public void mouseEntered(MouseEvent e) { }
 	@Override
-	public void mouseExited(MouseEvent e) { }
+	public void mouseExited(MouseEvent e) { 
+		if(stopped == false){
+			Point locOnScreen = this.camTest.getLocationOnScreen();
+			int middleX = locOnScreen.x + (this.camTest.getWidth() / 2);
+			int middleY = locOnScreen.y + (this.camTest.getHeight() / 2);
+			try{
+				Robot rob = new Robot();
+				rob.mouseMove(middleX, middleY);
+			}catch(Exception ex){System.out.println(ex);}
+			this.resetMousePositions();
+		}
+	}
 	@Override
 	public void mouseReleased(MouseEvent e) { 
 		resetMousePositions();
@@ -60,7 +100,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	public void mousePressed(MouseEvent e) {
 	}
 
-	
+
 	public void resetMousePositions(){
 		this.lastMousePosX = 0;
 		this.lastMousePosY = 0;
