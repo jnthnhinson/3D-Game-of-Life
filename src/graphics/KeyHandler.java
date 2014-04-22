@@ -8,8 +8,8 @@ import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
 public class KeyHandler implements KeyListener, ActionListener {
-	private int W, A, S, D, SPACE, ESC, SHIFT;
-	private boolean left = false, right = false, forward = false, back = false, shift = false, space = false, esc = false;
+	private int W, A, S, D, Q, E, SPACE, ESC, SHIFT;
+	private boolean left = false, right = false, forward = false, back = false, tiltR = false, tiltL = true, shift = false, space = false, esc = false;
 
 	private Timer timer;
 	private CameraTest camTest;
@@ -27,6 +27,8 @@ public class KeyHandler implements KeyListener, ActionListener {
 		A = KeyEvent.VK_A;
 		S = KeyEvent.VK_S;
 		D = KeyEvent.VK_D;
+		Q = KeyEvent.VK_Q;
+		E = KeyEvent.VK_E;
 		ESC = KeyEvent.VK_ESCAPE;
 		SPACE = KeyEvent.VK_SPACE;
 		SHIFT = KeyEvent.VK_SHIFT;
@@ -46,6 +48,10 @@ public class KeyHandler implements KeyListener, ActionListener {
 			this.camTest.moveCamera("U");
 		} if(shift == true){
 			this.camTest.moveCamera("D");
+		} if(tiltR == true){
+			this.camTest.tiltCamera("R");
+		} if(tiltL == true){
+			this.camTest.tiltCamera("L");
 		}
 	}
 
@@ -56,6 +62,8 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == D) {right = true; }
 		if (key == W) {forward = true; }
 		if (key == S) {back = true; }
+		if (key == Q) {tiltL = true; }
+		if (key == E) {tiltR = true; }
 		if (key == SPACE) {space = true; }
 		if (key == SHIFT) {shift = true; }
 		if (key == ESC) { this.camTest.toggleCursor(); }
@@ -67,6 +75,8 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == D) {right = false; }
 		if (key == W) {forward = false; }
 		if (key == S) {back = false; }
+		if (key == Q) {tiltL = false; }
+		if (key == E) {tiltR = false; }
 		if (key == SPACE) {space = false; }
 		if (key == SHIFT) {shift = false; }
 	}

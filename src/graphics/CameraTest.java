@@ -111,7 +111,7 @@ public class CameraTest extends JFrame{
 		buffer = new FrameBuffer(800, 600, FrameBuffer.SAMPLINGMODE_NORMAL);
 		buffer.enableRenderer(IRenderer.RENDERER_SOFTWARE);
 		while (isShowing()) {
-			buffer.clear(java.awt.Color.BLUE);
+			buffer.clear(java.awt.Color.CYAN);
 			world.renderScene(buffer);
 			world.draw(buffer);
 			buffer.update();
@@ -139,6 +139,14 @@ public class CameraTest extends JFrame{
 		else if(dir == "B"){camera.moveCamera(Camera.CAMERA_MOVEOUT, 1);}
 		else if(dir == "U"){camera.moveCamera(Camera.CAMERA_MOVEUP, 1);}
 		else if(dir == "D"){camera.moveCamera(Camera.CAMERA_MOVEDOWN, 1);}
+	}
+	
+	public void tiltCamera(String dir){
+		if(dir == "L"){
+			camera.rotateCameraZ((float)-.03);
+		} else if(dir == "R"){
+			camera.rotateCameraZ((float).03);
+		}
 	}
 
 	public void rotateView(int dx, int dy){	
