@@ -16,6 +16,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	boolean stopped = false;
 	int lastMousePosX, lastMousePosY;
 	int mouseOffsetX, mouseOffsetY;
+	int middleX, middleY;
 
 	public MouseHandler(CameraTest ct){
 		this.camTest = ct;
@@ -68,9 +69,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	@Override
 	public void mouseExited(MouseEvent e) { 
 		if(stopped == false){
-			Point locOnScreen = this.camTest.getLocationOnScreen();
-			int middleX = locOnScreen.x + (this.camTest.getWidth() / 2);
-			int middleY = locOnScreen.y + (this.camTest.getHeight() / 2);
+			setMiddlePositions();
 			try{
 				Robot rob = new Robot();
 				rob.mouseMove(middleX, middleY);
@@ -79,11 +78,20 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 		}
 	}
 	@Override
-	public void mouseReleased(MouseEvent e) { this.camTest.addBlockRight(); }
+	public void mouseReleased(MouseEvent e) { 
+		this.camTest.addBlockAbove();
+	}
 	@Override
-	public void mousePressed(MouseEvent e) { this.camTest.addBlockLeft(); }
+	public void mousePressed(MouseEvent e) { 
+		this.camTest.selectPointedObject();
+	}
 
-
+	public void setMiddlePositions(){
+		Point locOnScreen = this.camTest.getLocationOnScreen();
+		middleX = locOnScreen.x + (this.camTest.getWidth() / 2);
+		middleY = locOnScreen.y + (this.camTest.getHeight() / 2);
+	}
+	
 	public void resetMousePositions(){
 		this.lastMousePosX = 0;
 		this.lastMousePosY = 0;

@@ -23,7 +23,7 @@ public class CameraTest extends JFrame{
 	private MouseHandler mh;
 	private KeyHandler kh;
 	private Camera camera;
-	private Object3D cube1;
+	private Object3D cube1, selectedObject;
 	private ArrayList<Object3D> cubes;
 	private boolean showCursor = false;
 
@@ -37,6 +37,7 @@ public class CameraTest extends JFrame{
 
 		cubes = new ArrayList<Object3D>();
 		cube1 = createCube();
+		selectedObject = cube1;
 		
 		camera = world.getCamera();
 		camera.moveCamera(Camera.CAMERA_MOVEOUT, 10);
@@ -65,26 +66,46 @@ public class CameraTest extends JFrame{
 
 	public void addBlockRight(){
 		Object3D cube = this.createCube();
-		SimpleVector x = cube.getXAxis();
-		SimpleVector z = cube.getZAxis();
-		x.scalarMul((float)6);
-		z.scalarMul((float)6);
-		cube.translate(x);
-		cube.translate(z);
+		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
+		m.translate(10, 0, 10);
+		cube.setTranslationMatrix(m);
 		cubes.add(cube);
 		world.addObject(cube);
 	}
 
 	public void addBlockLeft(){
 		Object3D cube = this.createCube();
-		SimpleVector x = cube.getXAxis();
-		SimpleVector z = cube.getZAxis();
-		x.scalarMul((float)-6);
-		z.scalarMul((float)-6);
-		cube.translate(x);
-		cube.translate(z);
+		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
+		m.translate(-10, 0, -10);
+		cube.setTranslationMatrix(m);
 		cubes.add(cube);
 		world.addObject(cube);
+	}
+	
+	public void addBlockAbove(){
+		Object3D cube = this.createCube();
+		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
+		m.translate(0, 10, 0);
+		cube.setTranslationMatrix(m);
+		cubes.add(cube);
+		world.addObject(cube);
+	}
+	
+	public void addBlockBelow(){
+		Object3D cube = this.createCube();
+		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
+		m.translate(0, -10, 0);
+		cube.setTranslationMatrix(m);
+		cubes.add(cube);
+		world.addObject(cube);		
+	}
+
+	public Object3D createCube(){
+		Object3D c = Primitives.getCube(4);
+		c.setAdditionalColor(Color.RED);
+		c.setSpecularLighting(true);
+		c.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
+		return c;
 	}
 	
 	public void toggleCursor(){
@@ -124,14 +145,6 @@ public class CameraTest extends JFrame{
 		System.exit(0);
 	}
 
-	public Object3D createCube(){
-		Object3D cube = Primitives.getCube(4);
-		cube.setAdditionalColor(Color.RED);
-		cube.setSpecularLighting(true);
-		return cube;
-	}
-
-
 	public void moveCamera(String dir) {
 		if(dir == "L"){camera.moveCamera(Camera.CAMERA_MOVELEFT, 1);}
 		else if(dir == "R"){camera.moveCamera(Camera.CAMERA_MOVERIGHT, 1);}
@@ -159,9 +172,23 @@ public class CameraTest extends JFrame{
 		}
 	}
 
+    public int selectPointedObject(){
+    	SimpleVector ray = Interact2D.reproject2D3DWS(camera, buffer, this.getWidth()/2, this.getHeight()/2).normalize(); 
+    	Object[] res = world.calcMinDistanceAndObject3D(camera.getPosition(), ray, 10000F);
+    	if (res==null || res[1] == null || res[0] == (Object)Object3D.RAY_MISSES_BOX) { 
+    		System.out.println("Did not click an object");
+    		selectedObject = null;
+    		return -1;
+    	}
+    	Object3D obj = (Object3D)res[1];
+    	obj.setAdditionalColor(Color.blue);
+    	System.out.println("SELECTED OBJECT: " + obj.getName());
+    	selectedObject = obj;		
+    	return obj.getID();
+    }
+	
 	public static void main(String[] args) throws Exception {
 		CameraTest H = new CameraTest();
 		H.loop();
 	}
-
 }
