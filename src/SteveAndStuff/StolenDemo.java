@@ -1,30 +1,85 @@
+// Code modified from jpct's fps example.
+
 package src.SteveAndStuff;
+
 import java.io.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 
+import javax.swing.JFrame;
+
 import com.threed.jpct.*;
 import com.threed.jpct.util.KeyMapper;
 import com.threed.jpct.util.KeyState;
 
-
+/**
+ * This is a simple demonstration of how a first-person-shooter like application
+ * can be implementated using jPCT. It shows fps-like movement and collision detection
+ * as well as loading a 3DS-level, some OcTree-stuff etc.
+ */
 class JPCTDemo {
 
+	/**
+	 * The starting position of the player
+	 */
 	private final static SimpleVector STARTING_POS=new SimpleVector(800, -120, -400);
+
+	/**
+	 * The radius of the sphere used for sphere/polygon collision detection
+	 */
 	private final static float COLLISION_SPHERE_RADIUS=8f;
+
+	/**
+	 * The "height" of the player, i.e. how many units the camera is loacted above the ground.
+	 */
 	private final static float PLAYER_HEIGHT=30f;
+
+	/**
+	 * The dimensions of the ellipsoid used for collision detection. This represents the "size"
+	 * of the player
+	 */
 	private final static SimpleVector ELLIPSOID_RADIUS=new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
+
+	/**
+	 * The speed with which the player will fall if there's no ground below his feet
+	 */
 	private final static float GRAVITY=4f;
+
+	/**
+	 * How fast the player will move (in world units)
+	 */
 	private final static float MOVE_SPEED=2.5f;
+
+	/**
+	 * How fast the player will turn
+	 */
 	private final static float TURN_SPEED=0.06f;
+
+	/**
+	 * A flag that signals a change of the renderer (don't ask about the 35 here....)
+	 */
 	private final static int SWITCH_RENDERER=35;
+
+	/**
+	 * Should we try to do fullscreen?
+	 */
 	private boolean fullscreen=false;
+
+	/**
+	 * Are we using OpenGL?
+	 */
 	private boolean openGL=false;
+
+	/**
+	 * Are we rendering in wireframe mode?
+	 */
 	private boolean wireframe=false;
 
-	
+	/**
+	 * Some jPCT related stuff...
+	 */
 	private Object3D level=null;
 	private Object3D weapon=null;
 	private Object3D elevator=null;
@@ -33,19 +88,28 @@ class JPCTDemo {
 	private TextureManager texMan=null;
 	private Camera camera=null;
 
-	
+	/**
+	 * The texture used for blitting the framerate
+	 */
 	private Texture numbers=null;
 
+	/**
+	 * playerDirection stores the player's current orientation, so that the player's
+	 * movement is decoupled from the actual camera.
+	 */
 	private Matrix playerDirection=new Matrix();
 	private SimpleVector tempVector=new SimpleVector();
 
+	/**
+	 * Default size of the framebuffer
+	 */
 	private int width=640;
 	private int height=480;
 
 	/**
 	 * Some AWT related stuff
 	 */
-	private Frame frame=null;
+	private JFrame frame=null;
 	private Graphics gFrame=null;
 	private BufferStrategy bufferStrategy=null;
 	private GraphicsDevice device=null;
@@ -73,21 +137,73 @@ class JPCTDemo {
 	private boolean down=false;
 	private boolean forward=false;
 	private boolean back=false;
+	private boolean jumping = false;
+	private boolean strafeLeft = false;
+	private boolean strafeRight = false;
 
-
+	/**
+	 * The KeyMapper that offers a uniform way to access
+	 * the keyboard in hard- and software-mode
+	 */
 	private KeyMapper keyMapper=null;
 
+	/**
+	 * Some vars to handle the elevator
+	 */
 	float elevatorOffset=-0.8f;
 	float elevatorPosition=-90f;
 	int elevatorCountdown=50;
 
-
+	/**
+	 * Very complex stuff...impossible to explain...
+	 */
 	public static void main(String[] args) {
 		JPCTDemo start=new JPCTDemo(args);
 	}
 
-	
+	/**
+	 * The constructor. Here we are initializing things...
+	 */
 	private JPCTDemo(String[] args) {
+		/**
+		 * Evaluate the commandline parameters
+		 */
+		for (int i=0; i<args.length; i++) {
+			if (args[i].equals("fullscreen")) {
+				fullscreen=true;
+				Config.glFullscreen=true;
+			}
+			if (args[i].equals("mipmap")) {
+				Config.glMipmap=true;
+			}
+			if (args[i].equals("trilinear")) {
+				Config.glTrilinear=true;
+			}
+
+			if (args[i].equals("16bit")) {
+				Config.glColorDepth=16;
+			}
+			try {
+				if (args[i].startsWith("width=")) {
+					width=Integer.parseInt(args[i].substring(6));
+				}
+				if (args[i].startsWith("height=")) {
+					height=Integer.parseInt(args[i].substring(7));
+				}
+				if (args[i].startsWith("refresh=")) {
+					Config.glRefresh=Integer.parseInt(args[i].substring(8));
+				}
+				if (args[i].startsWith("zbuffer=")) {
+					Config.glZBufferDepth=Integer.parseInt(args[i].substring(8));
+					if (Config.glZBufferDepth==16) {
+						Config.glFixedBlitting=true;
+					}
+				}
+
+			} catch (Exception e) {
+				// We don't care...
+			}
+		}
 
 		isIdle=false;
 		switchMode=0;
@@ -101,6 +217,11 @@ class JPCTDemo {
 		theWorld=new World();
 		texMan=TextureManager.getInstance();
 
+		/**
+		 * Setup the lighting. We are not using overbright lighting because the OpenGL
+		 * renderer can't do it, but we are using RGB-scaling. Some hardware/drivers
+		 * for OpenGL don't support this.
+		 */
 		Config.fadeoutLight=true;
 		Config.linearDiv=100;
 		Config.lightDiscardDistance=350;
@@ -289,9 +410,10 @@ class JPCTDemo {
 			GraphicsEnvironment env=GraphicsEnvironment.getLocalGraphicsEnvironment();
 			device=env.getDefaultScreenDevice();
 			GraphicsConfiguration gc=device.getDefaultConfiguration();
-			frame=new Frame(gc);
+			frame=new JFrame(gc);
 			frame.setUndecorated(true);
 			frame.setIgnoreRepaint(true);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			device.setFullScreenWindow(frame);
 			if (device.isDisplayChangeSupported()) {
 				device.setDisplayMode(new DisplayMode(width, height, 32, 0));
@@ -302,7 +424,7 @@ class JPCTDemo {
 			bufferStrategy.show();
 			g.dispose();
 		} else {
-			frame=new Frame();
+			frame=new JFrame();
 			frame.setTitle("jPCT "+Config.getVersion());
 			frame.pack();
 			Insets insets = frame.getInsets();
@@ -369,7 +491,12 @@ class JPCTDemo {
 
 		SimpleVector camPos=camera.getPosition();
 		camPos.add(new SimpleVector(0, PLAYER_HEIGHT/2f, 0));
-		SimpleVector dir=new SimpleVector(0, GRAVITY, 0);
+		//SimpleVector dir=new SimpleVector(0, GRAVITY, 0);
+		SimpleVector dir;
+		if (jumping) {dir = new SimpleVector(0, -GRAVITY, 0);}
+		else {dir = new SimpleVector(0, GRAVITY, 0);}
+		//
+		
 		dir=theWorld.checkCollisionEllipsoid(camPos, dir, ELLIPSOID_RADIUS, 1);
 		camPos.add(new SimpleVector(0, -PLAYER_HEIGHT/2f, 0));
 		dir.x=0;
@@ -414,12 +541,25 @@ class JPCTDemo {
 		}
 
 		if (up) {
+			
 			camera.rotateX(TURN_SPEED);
 		}
 		if (down) {
 			camera.rotateX(-TURN_SPEED);
 		}
-
+		if (strafeLeft) {
+			camera.moveCamera(new SimpleVector(0,1,0), PLAYER_HEIGHT/2f);
+			cameraChanged=true;
+			tempVector=playerDirection.getXAxis();
+			tempVector.scalarMul(-1f);
+			theWorld.checkCameraCollisionEllipsoid(tempVector, ELLIPSOID_RADIUS, MOVE_SPEED, 5);
+		}
+		if (strafeRight) {
+			camera.moveCamera(new SimpleVector(0,1,0), PLAYER_HEIGHT/2f);
+			cameraChanged=true;
+			tempVector=playerDirection.getXAxis();
+			theWorld.checkCameraCollisionEllipsoid(tempVector, ELLIPSOID_RADIUS, MOVE_SPEED, 5);
+		}
 		if (cameraChanged) {
 			camera.moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);
 		}
@@ -607,22 +747,32 @@ class JPCTDemo {
 			right=event;
 			break;
 		}
-		case (KeyEvent.VK_PAGE_UP): {
+		case (KeyEvent.VK_UP): {
 			up=event;
 			break;
 		}
-		case (KeyEvent.VK_PAGE_DOWN): {
+		case (KeyEvent.VK_DOWN): {
 			down=event;
 			break;
 		}
-		case (KeyEvent.VK_UP): {
+		case (KeyEvent.VK_W): {
 			forward=event;
 			break;
 		}
-		case (KeyEvent.VK_DOWN): {
+		case (KeyEvent.VK_A): {
+			strafeLeft = event;
+			break;
+		}
+		case (KeyEvent.VK_D): {
+			strafeRight = event;
+			break;
+		}
+		case (KeyEvent.VK_S): {
 			back=event;
 			break;
 		}
+		case (KeyEvent.VK_SPACE): {jumping = event;break;}
+		
 		case (KeyEvent.VK_1): {
 			if (event&&buffer.supports(FrameBuffer.SUPPORT_FOR_RGB_SCALING)) {
 				theWorld.getLights().setRGBScale(Lights.RGB_SCALE_DEFAULT);
@@ -644,7 +794,7 @@ class JPCTDemo {
 			break;
 		}
 
-		case (KeyEvent.VK_W): { // wireframe mode (w)
+		case (KeyEvent.VK_O): { // wireframe mode (w)
 			if (event) {
 				wireframe=!wireframe;
 			}
