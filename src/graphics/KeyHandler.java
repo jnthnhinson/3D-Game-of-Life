@@ -9,7 +9,7 @@ import javax.swing.Timer;
 
 public class KeyHandler implements KeyListener, ActionListener {
 	private int W, A, S, D, Q, E, SPACE, ESC, SHIFT;
-	private boolean left = false, right = false, forward = false, back = false, tiltR = false, tiltL = true, shift = false, space = false, esc = false;
+	private boolean left = false, right = false, forward = false, back = false, tiltR = false, tiltL = false, shift = false, space = false, esc = false;
 
 	private Timer timer;
 	private CameraTest camTest;
