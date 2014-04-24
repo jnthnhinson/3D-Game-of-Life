@@ -39,7 +39,7 @@ public class CellManager {
 	}
 		
 	private void populateWorld(){
-		int dist = 5;
+		int dist = 3;
 		float newx = 0; float newy = 0; float newz = 0;
 		
 		for(int z = 01; z < size-1; z++){
