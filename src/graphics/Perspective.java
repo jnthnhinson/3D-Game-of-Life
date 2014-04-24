@@ -74,7 +74,7 @@ public class Perspective extends JFrame{
 	}
 
 	private void initListeners(){
-		kh = new KeyHandler(this);
+		kh = new KeyHandler(this, camera);
 		mh = new MouseHandler(this, wb, camera);
 
 		this.addKeyListener(kh);
