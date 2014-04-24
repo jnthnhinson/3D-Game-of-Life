@@ -12,13 +12,15 @@ public class KeyHandler implements KeyListener, ActionListener {
 	private boolean left = false, right = false, forward = false, back = false, tiltR = false, tiltL = false, shift = false, space = false, esc = false;
 
 	private Timer timer;
-	private Perspective camTest;
+	private Perspective perspective;
+	private GameCamera camera;
 	
-	public KeyHandler(Perspective camTest){
+	public KeyHandler(Perspective perspective, GameCamera camera){
 		this.timer = new Timer(10, this);
 		this.timer.start();
 		
-		this.camTest = camTest;
+		this.perspective = perspective;
+		this.camera = camera;
 		initKeyCodes();
 	}
 	
@@ -37,21 +39,21 @@ public class KeyHandler implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(left == true){
-			this.camTest.moveCamera("L");
+			camera.moveCamera("L");
 		} if(right == true){
-			this.camTest.moveCamera("R");
+			camera.moveCamera("R");
 		} if(forward == true){
-			this.camTest.moveCamera("F");
+			camera.moveCamera("F");
 		} if(back == true){
-			this.camTest.moveCamera("B");
+			camera.moveCamera("B");
 		} if(space == true){
-			this.camTest.moveCamera("U");
+			camera.moveCamera("U");
 		} if(shift == true){
-			this.camTest.moveCamera("D");
+			camera.moveCamera("D");
 		} if(tiltR == true){
-			this.camTest.tiltCamera("R");
+			camera.tiltCamera("R");
 		} if(tiltL == true){
-			this.camTest.tiltCamera("L");
+			camera.tiltCamera("L");
 		}
 	}
 
@@ -66,7 +68,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == E) {tiltR = true; }
 		if (key == SPACE) {space = true; }
 		if (key == SHIFT) {shift = true; }
-		if (key == ESC) { this.camTest.toggleCursor(); }
+		if (key == ESC) { perspective.toggleCursor(); }
 	}
 	@Override
 	public void keyReleased(KeyEvent e){
