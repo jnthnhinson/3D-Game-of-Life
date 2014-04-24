@@ -39,11 +39,11 @@ public class CameraTest extends JFrame{
 
 		Light light = new Light(world);
 		light.setPosition(new SimpleVector(0, -80, 0));
-		light.setIntensity(40, 25, 22);
+		light.setIntensity(10, 10, 10);
 
-//		world.buildAllObjects();
-
-		camera.lookAt(cellManager.getRootCell().getTransformedCenter());
+		world.buildAllObjects();
+		
+		camera.lookAt(cellManager.getCell(0, 0, 0).getTransformedCenter());
 
 		initListeners();
 		hideCursor();
@@ -58,28 +58,13 @@ public class CameraTest extends JFrame{
 		this.addMouseMotionListener(mh);
 	}
 
-	public void addBlockRight(){
-		Cell cube = new Cell();
-		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
-		m.translate(10, 0, 10);
-		cube.setTranslationMatrix(m);
-		world.addObject(cube);
-	}
-
+	//test methods
 	public void addBlockLeft(){
 		Cell cube = new Cell();
 		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
 		m.translate(-10, 0, -10);
 		cube.setTranslationMatrix(m);
 		world.addObject(cube);
-	}
-	
-	public void addBlockAbove(){
-		Cell cube = new Cell();
-		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
-		m.translate(0, 10, 0);
-		cube.setTranslationMatrix(m);
- 		world.addObject(cube);
 	}
 	
 	public void addBlockBelow(){
@@ -157,19 +142,15 @@ public class CameraTest extends JFrame{
 		}
 	}
 
-    public int selectPointedObject(){
+    public void selectPointedObject(){
     	SimpleVector ray = Interact2D.reproject2D3DWS(camera, buffer, this.getWidth()/2, this.getHeight()/2).normalize(); 
     	Object[] res = world.calcMinDistanceAndObject3D(camera.getPosition(), ray, 10000F);
     	if (res==null || res[1] == null || res[0] == (Object)Object3D.RAY_MISSES_BOX) { 
     		System.out.println("Did not click an object");
     		selectedObject = null;
-    		return -1;
     	}
-    	Object3D obj = (Object3D)res[1];
-    	obj.setAdditionalColor(Color.blue);
-    	System.out.println("SELECTED OBJECT: " + obj.getName());
-    	selectedObject = obj;		
-    	return obj.getID();
+    	selectedObject = (Object3D)res[1];
+    	selectedObject.setAdditionalColor(Color.blue);
     }
 	
 	public static void main(String[] args) throws Exception {
