@@ -44,7 +44,7 @@ public class Perspective extends JFrame{
 		world.setCameraTo(camera);
 
 		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
-		camera.lookAt(cellManager.getRootCell().getTransformedCenter());
+		camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
 
 		initListeners();
 		hideCursor();
