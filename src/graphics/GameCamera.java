@@ -79,6 +79,7 @@ public class GameCamera extends Camera {
 	public void performMovement() {
 		performGravity();
 		performOtherMovement();
+		resetBools();
 	}
 	
 	private void performGravity() {
@@ -86,7 +87,7 @@ public class GameCamera extends Camera {
 		camPos.add(new SimpleVector(0, PLAYER_HEIGHT/2f, 0));
 		//SimpleVector dir = new SimpleVector(0, GRAVITY, 0);
 		SimpleVector dir;
-		if (jumping) {dir = new SimpleVector(0, -GRAVITY, 0);}
+		if (jumping) {dir = new SimpleVector(0, -GRAVITY, 0);jumping = false;}
 		else {dir = new SimpleVector(0, GRAVITY, 0);}
 		dir = world.checkCollisionEllipsoid(camPos, dir, ELLIPSOID_RADIUS, 1);
 		camPos.add(new SimpleVector(0, -PLAYER_HEIGHT/2f, 0));
@@ -108,6 +109,21 @@ public class GameCamera extends Camera {
 		if (strafeLeft) {strafe(false); cameraChanged = true;}
 		if (strafeRight) {strafe(true); cameraChanged = true;}
 		if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
+	}
+	
+	public void resetBools() {
+		left = false;
+		right = false;
+		up = false;
+		down = false;
+		forward = false;
+		backward = false;
+		jumping = false;
+		falling = false;
+		strafeLeft = false;
+		strafeRight = false;
+		tiltLeft = false;
+		tiltRight = false;
 	}
 
 	private void walk(boolean isForward) {
