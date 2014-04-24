@@ -13,14 +13,15 @@ import javax.swing.Timer;
 public class MouseHandler extends MouseMotionAdapter implements MouseListener, ActionListener{
 	Perspective view;
 	WorldBuilder wb;
+	GameCamera camera;
 	Timer timer;
 	boolean stopped = false;
 	int lastMousePosX, lastMousePosY;
 	int mouseOffsetX, mouseOffsetY;
 	int middleX, middleY;
 
-	public MouseHandler(Perspective ct, WorldBuilder wb){
-		this.view = ct;
+	public MouseHandler(Perspective view, WorldBuilder wb, GameCamera camera){
+		this.view = view;
 		this.wb = wb;
 		this.timer = new Timer(1, this);
 		this.timer.start();
@@ -35,7 +36,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	public void mouseMoved(MouseEvent e){
 		if(stopped == false){
 			updateMouseMovement(e);
-			this.view.rotateView(mouseOffsetX, mouseOffsetY);
+			camera.rotateView(mouseOffsetX, mouseOffsetY);
 		}
 	}
 
@@ -81,7 +82,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) { 
-		wb.addBlockLeft();
+		wb.addBlockLeft(view.getSelectedObject());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) { 
