@@ -1,17 +1,27 @@
 package src.data_structures;
 
+import java.awt.Color;
+
 import com.threed.jpct.Object3D;
+import com.threed.jpct.Primitives;
+
 /*Currently the only constructor is a copy constructor
  *Create one object at instantiation and just use the copy constructor to clone it as many times as needed?
  *I'm not sure how the coordinate system works in JPCT
  */
 public class Cell extends Object3D{
-	
 	private int pop;
 	private int[] coordinates = {0, 0, 0};
 
-	public Cell(Object3D ori) {
-		super(ori);
+	public Cell() {
+		super(Primitives.getCube(1));
+		this.initSelf();
+	}
+	
+	private void initSelf(){
+		this.setAdditionalColor(Color.RED);
+		this.setSpecularLighting(true);
+		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 	}
 	
 	public void incPop(boolean pol){
@@ -31,7 +41,4 @@ public class Cell extends Object3D{
 	public int[] getCoordinates(){
 		return coordinates;
 	}
-	
-	
-
 }

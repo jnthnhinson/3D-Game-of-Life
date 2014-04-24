@@ -20,7 +20,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 
 	public MouseHandler(CameraTest ct){
 		this.camTest = ct;
-		this.timer = new Timer(5, this);
+		this.timer = new Timer(1, this);
 		this.timer.start();
 	}
 

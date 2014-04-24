@@ -1,20 +1,18 @@
 package src.graphics;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
 
 import com.threed.jpct.*;
 import com.threed.jpct.util.Light;
 
 import javax.swing.*;
+
+import src.data_structures.Cell;
+import src.data_structures.CellManager;
 
 @SuppressWarnings("serial")
 public class CameraTest extends JFrame{
@@ -23,8 +21,8 @@ public class CameraTest extends JFrame{
 	private MouseHandler mh;
 	private KeyHandler kh;
 	private Camera camera;
-	private Object3D cube1, selectedObject;
-	private ArrayList<Object3D> cubes;
+	private Object3D selectedObject;
+	private CellManager cellManager;
 	private boolean showCursor = false;
 
 	public CameraTest() throws Exception {
@@ -35,21 +33,18 @@ public class CameraTest extends JFrame{
 		world = new World();
 		world.setAmbientLight(150, 150, 150);
 
-		cubes = new ArrayList<Object3D>();
-		cube1 = createCube();
-		selectedObject = cube1;
+		cellManager = new CellManager(10, world);
 		
 		camera = world.getCamera();
-		camera.moveCamera(Camera.CAMERA_MOVEOUT, 10);
+		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
 
 		Light light = new Light(world);
 		light.setPosition(new SimpleVector(0, -80, 0));
 		light.setIntensity(40, 25, 22);
 
-		world.addObject(cube1);
-		world.buildAllObjects();
+//		world.buildAllObjects();
 
-		camera.lookAt(cube1.getTransformedCenter());
+		camera.lookAt(cellManager.getRootCell().getTransformedCenter());
 
 		initListeners();
 		hideCursor();
@@ -65,48 +60,37 @@ public class CameraTest extends JFrame{
 	}
 
 	public void addBlockRight(){
-		Object3D cube = this.createCube();
+		Cell cube = new Cell();
 		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
 		m.translate(10, 0, 10);
 		cube.setTranslationMatrix(m);
-		cubes.add(cube);
 		world.addObject(cube);
 	}
 
 	public void addBlockLeft(){
-		Object3D cube = this.createCube();
+		Cell cube = new Cell();
 		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
 		m.translate(-10, 0, -10);
 		cube.setTranslationMatrix(m);
-		cubes.add(cube);
 		world.addObject(cube);
 	}
 	
 	public void addBlockAbove(){
-		Object3D cube = this.createCube();
+		Cell cube = new Cell();
 		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
 		m.translate(0, 10, 0);
 		cube.setTranslationMatrix(m);
-		cubes.add(cube);
-		world.addObject(cube);
+ 		world.addObject(cube);
 	}
 	
 	public void addBlockBelow(){
-		Object3D cube = this.createCube();
+		Cell cube = new Cell();
 		Matrix m = this.selectedObject.getTranslationMatrix().cloneMatrix();
 		m.translate(0, -10, 0);
 		cube.setTranslationMatrix(m);
-		cubes.add(cube);
 		world.addObject(cube);		
 	}
 
-	public Object3D createCube(){
-		Object3D c = Primitives.getCube(4);
-		c.setAdditionalColor(Color.RED);
-		c.setSpecularLighting(true);
-		c.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
-		return c;
-	}
 	
 	public void toggleCursor(){
 		if(this.showCursor == false){
@@ -129,15 +113,17 @@ public class CameraTest extends JFrame{
 	}
 
 	private void loop() throws Exception {
-		buffer = new FrameBuffer(800, 600, FrameBuffer.SAMPLINGMODE_NORMAL);
-		buffer.enableRenderer(IRenderer.RENDERER_SOFTWARE);
+		buffer = new FrameBuffer(1000, 800, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
+		buffer.optimizeBufferAccess();
+		System.out.println("problem after Gl \n\n\n");
+		
 		while (isShowing()) {
-			buffer.clear(java.awt.Color.CYAN);
+			buffer.clear(java.awt.Color.BLACK);
 			world.renderScene(buffer);
 			world.draw(buffer);
 			buffer.update();
 			buffer.display(getGraphics());
-			Thread.sleep(1);
+			Thread.sleep(10);
 		}
 		buffer.disableRenderer(IRenderer.RENDERER_OPENGL);
 		buffer.dispose();
