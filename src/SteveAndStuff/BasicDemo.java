@@ -23,29 +23,27 @@ public class BasicDemo {
 	private final static float GRAVITY = 4f;
 	private final static float MOVE_SPEED = 2.5f;
 	private final static float TURN_SPEED = 0.06f;
-	private final static int SWITCH_RENDERER = 35;
 
 	private boolean isIdle;
-	private int switchMode, totalFps, fps, lastFps;
+	private int totalFps, fps, lastFps;
 	private World world;
 	private TextureManager textureManager;
 	private Camera camera;
 	private KeyMapper keyMapper;
 
-	boolean fullscreen = false;
-	GraphicsDevice device;
-	Frame frame;
-	BufferStrategy bufferStrategy;
-	int titleBarHeight;
-	int leftBorderWidth;
-	Graphics gFrame;
-	int width = 640;
-	int height = 480;
-	FrameBuffer buffer;
-	boolean exit = false;
-	int pps;
-	int lastPps;
-	boolean wireframe = false;
+	private GraphicsDevice device;
+	private Frame frame;
+	private BufferStrategy bufferStrategy;
+	private int titleBarHeight;
+	private int leftBorderWidth;
+	private Graphics gFrame;
+	private int width = 640;
+	private int height = 480;
+	private FrameBuffer buffer;
+	private boolean exit = false;
+	private int pps;
+	private int lastPps;
+	private boolean wireframe = false;
 
 	private boolean left = false;
 	private boolean right = false;
@@ -57,7 +55,6 @@ public class BasicDemo {
 	private boolean strafeLeft = false;
 	private boolean strafeRight = false;
 
-	private boolean openGL = false;
 	private Texture numbers = null;
 
 	private SimpleVector tempVector=new SimpleVector();
@@ -69,7 +66,6 @@ public class BasicDemo {
 
 	private BasicDemo() {
 		isIdle = false;
-		switchMode = 0;
 		totalFps = 0;
 		fps = 0;
 		lastFps = 0;
@@ -103,12 +99,9 @@ public class BasicDemo {
 		Timer fpsTimer = new Timer(1000);
 		fpsTimer.start();
 
-		long timerTicks = 0;
-
 		while (!exit) {
 			if (!isIdle) {
 				long ticks = timer.getElapsedTicks();
-				timerTicks += ticks;
 
 				for (int i = 0; i<ticks; i++) {performMovement();}
 				poll();
@@ -142,44 +135,22 @@ public class BasicDemo {
 		}
 
 		buffer.dispose();
-		if (!openGL && fullscreen) {
-			device.setFullScreenWindow(null);
-		}
+
 		System.exit(0);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initializeFrame() {
-
-		if (fullscreen) {
-			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			device = env.getDefaultScreenDevice();
-			GraphicsConfiguration gc = device.getDefaultConfiguration();
-			frame = new Frame(gc);
-			frame.setUndecorated(true);
-			frame.setIgnoreRepaint(true);
-			device.setFullScreenWindow(frame);
-
-			if (device.isDisplayChangeSupported()) {device.setDisplayMode(new DisplayMode(width, height, 32, 0));}
-
-			frame.createBufferStrategy(2);
-			bufferStrategy = frame.getBufferStrategy();
-			Graphics g = bufferStrategy.getDrawGraphics();
-			bufferStrategy.show();
-			g.dispose();
-
-		} else {
-			frame = new Frame();
-			frame.setTitle("jPCT "+Config.getVersion());
-			frame.pack();
-			Insets insets  =  frame.getInsets();
-			titleBarHeight = insets.top;
-			leftBorderWidth = insets.left;
-			frame.setSize(width+leftBorderWidth+insets.right, height+titleBarHeight+insets.bottom);
-			frame.setResizable(false);
-			frame.show();
-			gFrame = frame.getGraphics();
-		}
-
+		frame = new Frame();
+		frame.setTitle("jPCT "+Config.getVersion());
+		frame.pack();
+		Insets insets  =  frame.getInsets();
+		titleBarHeight = insets.top;
+		leftBorderWidth = insets.left;
+		frame.setSize(width+leftBorderWidth+insets.right, height+titleBarHeight+insets.bottom);
+		frame.setResizable(false);
+		frame.show();
+		gFrame = frame.getGraphics();
 		/**
 		 * The listeners are bound to the AWT frame...they are useless in OpenGL mode.
 		 */
@@ -228,6 +199,7 @@ public class BasicDemo {
 
 		public void start() {ticks=System.currentTimeMillis();}
 
+		@SuppressWarnings("unused")
 		public void reset() {start();}
 
 		public long getElapsedTicks() {
@@ -307,18 +279,7 @@ public class BasicDemo {
 		blitNumber((int) totalFps, 5, 2);
 		blitNumber((int) lastPps, 5, 12);
 
-		if (!openGL) {
-			if (!fullscreen) {
-				buffer.display(gFrame, leftBorderWidth, titleBarHeight);
-			} else {
-				Graphics g = bufferStrategy.getDrawGraphics();
-				g.drawImage(buffer.getOutputBuffer(), 0, 0, null);
-				bufferStrategy.show();
-				g.dispose();
-			}
-		} else {
-			buffer.displayGLOnly();
-		}
+		buffer.display(gFrame, leftBorderWidth, titleBarHeight);
 	}
 
 	private void blitNumber(int number, int x, int y) {
