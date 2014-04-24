@@ -11,15 +11,17 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.Timer;
 
 public class MouseHandler extends MouseMotionAdapter implements MouseListener, ActionListener{
-	CameraTest camTest;
+	Perspective view;
+	WorldBuilder wb;
 	Timer timer;
 	boolean stopped = false;
 	int lastMousePosX, lastMousePosY;
 	int mouseOffsetX, mouseOffsetY;
 	int middleX, middleY;
 
-	public MouseHandler(CameraTest ct){
-		this.camTest = ct;
+	public MouseHandler(Perspective ct, WorldBuilder wb){
+		this.view = ct;
+		this.wb = wb;
 		this.timer = new Timer(1, this);
 		this.timer.start();
 	}
@@ -33,7 +35,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	public void mouseMoved(MouseEvent e){
 		if(stopped == false){
 			updateMouseMovement(e);
-			this.camTest.rotateView(mouseOffsetX, mouseOffsetY);
+			this.view.rotateView(mouseOffsetX, mouseOffsetY);
 		}
 	}
 
@@ -79,17 +81,17 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) { 
-		this.camTest.addBlockAbove();
+		this.wb.addBlockAbove(view.getSelectedObject());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) { 
-		this.camTest.selectPointedObject();
+		this.view.selectPointedObject();
 	}
 
 	public void setMiddlePositions(){
-		Point locOnScreen = this.camTest.getLocationOnScreen();
-		middleX = locOnScreen.x + (this.camTest.getWidth() / 2);
-		middleY = locOnScreen.y + (this.camTest.getHeight() / 2);
+		Point locOnScreen = this.view.getLocationOnScreen();
+		middleX = locOnScreen.x + (this.view.getWidth() / 2);
+		middleY = locOnScreen.y + (this.view.getHeight() / 2);
 	}
 	
 	public void resetMousePositions(){
