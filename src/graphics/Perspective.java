@@ -8,14 +8,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import src.data_structures.Cell;
 import src.data_structures.CellManager;
 
 import com.threed.jpct.Camera;
 import com.threed.jpct.FrameBuffer;
 import com.threed.jpct.IRenderer;
 import com.threed.jpct.Interact2D;
-import com.threed.jpct.Matrix;
 import com.threed.jpct.Object3D;
 import com.threed.jpct.SimpleVector;
 import com.threed.jpct.World;
@@ -39,10 +37,9 @@ public class Perspective extends JFrame{
 
 		this.wb = wb;
 		this.world = world;
-		//this.camera = world.getCamera();
+
 		this.camera = new GameCamera();
 		world.setCameraTo(camera);
-
 		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
 		camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
 
@@ -53,6 +50,7 @@ public class Perspective extends JFrame{
 			loop();
 		} catch (Exception e) {
 			e.printStackTrace();
+			// What problems could occur and how should we communicate this?
 		}
 	}
 
@@ -77,7 +75,7 @@ public class Perspective extends JFrame{
 
 	private void initListeners(){
 		kh = new KeyHandler(this);
-		mh = new MouseHandler(this, wb);
+		mh = new MouseHandler(this, wb, camera);
 
 		this.addKeyListener(kh);
 		this.addMouseListener(mh);
@@ -120,9 +118,4 @@ public class Perspective extends JFrame{
 	}
 	public Object3D getSelectedObject() {return selectedObject;}
 
-	
-	public void moveCamera(String dir) {camera.moveCamera(dir);}
-	public void tiltCamera(String dir){camera.tiltCamera(dir);}
-	public void rotateView(int dx, int dy){	camera.rotateView(dx, dy);}
-	
 }
