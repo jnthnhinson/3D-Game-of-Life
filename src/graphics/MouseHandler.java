@@ -23,6 +23,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 	public MouseHandler(Perspective view, WorldBuilder wb, GameCamera camera){
 		this.view = view;
 		this.wb = wb;
+		this.camera = camera;
 		this.timer = new Timer(1, this);
 		this.timer.start();
 	}

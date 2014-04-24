@@ -39,21 +39,21 @@ public class KeyHandler implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(left == true){
-			camera.moveCamera("L");
+			camera.updateStatus("L");
 		} if(right == true){
-			camera.moveCamera("R");
+			camera.updateStatus("R");
 		} if(forward == true){
-			camera.moveCamera("F");
+			camera.updateStatus("F");
 		} if(back == true){
-			camera.moveCamera("B");
+			camera.updateStatus("B");
 		} if(space == true){
-			camera.moveCamera("U");
+			camera.updateStatus("U");
 		} if(shift == true){
-			camera.moveCamera("D");
+			camera.updateStatus("D");
 		} if(tiltR == true){
-			camera.tiltCamera("R");
+			camera.updateStatus("TR");
 		} if(tiltL == true){
-			camera.tiltCamera("L");
+			camera.updateStatus("TL");
 		}
 	}
 

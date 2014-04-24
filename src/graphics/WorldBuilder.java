@@ -43,7 +43,6 @@ public class WorldBuilder {
 		}
 	}
 
-
 	public void addBlockLeft(Object3D selectedObject){
 		Cell cube = new Cell();
 		if (selectedObject != null) {
@@ -82,7 +81,6 @@ public class WorldBuilder {
 			}
 		}
 	}
-
 
 	public static void main(String[] args) throws Exception {
 		new WorldBuilder();

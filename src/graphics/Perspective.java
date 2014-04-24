@@ -38,7 +38,7 @@ public class Perspective extends JFrame{
 		this.wb = wb;
 		this.world = world;
 
-		this.camera = new GameCamera();
+		this.camera = new GameCamera(world);
 		world.setCameraTo(camera);
 		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
 		camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
@@ -63,6 +63,8 @@ public class Perspective extends JFrame{
 			buffer.clear(java.awt.Color.BLACK);
 			world.renderScene(buffer);
 			world.draw(buffer);
+			
+			camera.performMovement();
 			buffer.update();
 			buffer.display(getGraphics());
 			Thread.sleep(10);
@@ -81,6 +83,8 @@ public class Perspective extends JFrame{
 		this.addMouseListener(mh);
 		this.addMouseMotionListener(mh);
 	}
+	
+	
 
 	public void toggleCursor(){
 		if(this.showCursor == false){
