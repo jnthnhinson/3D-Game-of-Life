@@ -1,5 +1,4 @@
 package src.graphics;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
