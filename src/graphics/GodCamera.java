@@ -10,6 +10,7 @@ public class GodCamera extends GameCamera{
 	private final static float PLAYER_HEIGHT = 30f;
 	private final static float GRAVITY = 4f;
 
+<<<<<<< HEAD
 	
 	private boolean left = false;
 	private boolean right = false;
@@ -112,5 +113,14 @@ public class GodCamera extends GameCamera{
 		tiltDown = false;
 		zoomOut = false;
 	}
+	
+	public void tiltCamera(String dir){
+		if(dir == "L"){
+			rotateCameraZ((float)-.03);
+		} else if(dir == "R"){
+			rotateCameraZ((float).03);
+		}
+	}
+
 	
 }

@@ -20,13 +20,7 @@ public class GameCamera extends Camera {
 		this.playerDirection = new Matrix();
 	}
 	
-	public void tiltCamera(String dir){
-		if(dir == "L"){
-			rotateCameraZ((float)-.03);
-		} else if(dir == "R"){
-			rotateCameraZ((float).03);
-		}
-	}
+	public void tiltCamera(String dir){}
 
 	public void rotateView(int dx, int dy){	
 		if (dx !=0 || dy != 0){
@@ -39,9 +33,8 @@ public class GameCamera extends Camera {
 	}
 	
 	
-	public void performMovement() {printDoom();}
-	public void updateStatus(String death) {printDoom();}
-	public void printDoom() {System.out.println("If this prints, then something has gone horribly, horribly wrong.");}
+	public void performMovement() {}
+	public void updateStatus(String status) {}
 
 	protected void walk(boolean isForward) {
 		moveCamera(new SimpleVector(0,1,0), PLAYER_HEIGHT/2f);
@@ -69,5 +62,4 @@ public class GameCamera extends Camera {
 		if (!isRight) {tempVector.scalarMul(-1f);}
 		world.checkCameraCollisionEllipsoid(tempVector, ELLIPSOID_RADIUS, MOVE_SPEED, 5);
 	}
-	
 }
