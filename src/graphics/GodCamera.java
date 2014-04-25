@@ -32,8 +32,8 @@ public class GodCamera extends GameCamera{
 	}
 	
 	public void updateStatus(String dir) {
-		if(dir == "L"){this.moveCamera(Camera.CAMERA_MOVELEFT, speed);}
-		else if(dir == "R"){this.moveCamera(Camera.CAMERA_MOVERIGHT, speed);}
+		if(dir == "SL"){this.moveCamera(Camera.CAMERA_MOVELEFT, speed);}
+		else if(dir == "SR"){this.moveCamera(Camera.CAMERA_MOVERIGHT, speed);}
 		else if(dir == "F"){this.moveCamera(Camera.CAMERA_MOVEIN, speed);}
 		else if(dir == "B"){this.moveCamera(Camera.CAMERA_MOVEOUT, speed);}
 		else if(dir == "U"){this.moveCamera(Camera.CAMERA_MOVEUP, speed);}
