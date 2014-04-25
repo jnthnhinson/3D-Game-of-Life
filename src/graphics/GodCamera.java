@@ -8,6 +8,7 @@ import com.threed.jpct.World;
 public class GodCamera extends GameCamera{
 	//private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
 	private final static float PLAYER_HEIGHT = 30f;
+	private final static float GRAVITY = 4f;
 
 	
 	private boolean left = false;
@@ -22,6 +23,8 @@ public class GodCamera extends GameCamera{
 	private boolean strafeRight = false;
 	private boolean tiltLeft = false;
 	private boolean tiltRight = false;
+	private boolean tiltUp = false;
+	private boolean tiltDown = false;
 	private boolean zoomOut = false;
 	
 	
@@ -32,14 +35,18 @@ public class GodCamera extends GameCamera{
 	}
 
 	public void updateStatus(String dir) {
-		if(dir == "L")			{strafeLeft = true;}
-		else if(dir == "R")		{strafeRight = true;}
+		if(dir == "SL")			{strafeLeft = true;}
+		else if(dir == "SR")	{strafeRight = true;}
 		else if(dir == "F")		{forward = true;}
 		else if(dir == "B")		{backward = true;}
 		else if(dir == "U")		{jumping = true;}
-		//else if(dir == "D")	{zoomOut = true;}
+		else if(dir == "D")		{falling = true;}
 		else if(dir == "TL")	{tiltLeft = true;}
 		else if(dir == "TR")	{tiltRight = true;}
+		else if(dir == "TU")	{tiltUp = true;}
+		else if(dir == "TD")	{tiltDown = true;}
+		else if(dir == "L")		{left = true;}
+		else if(dir == "R")		{right = true;}
 	}
 	
 	public void performMovement() {
@@ -47,7 +54,7 @@ public class GodCamera extends GameCamera{
 		resetBools();
 	}
 	
-	/*
+
 	private void performOtherMovement() {
 		boolean cameraChanged = false;
 
@@ -55,14 +62,28 @@ public class GodCamera extends GameCamera{
 		else if (backward) {walk(false);cameraChanged = true;}
 		if (left) {turn(false);}
 		if (right) {turn(true);}
-		if (up) {tilt(true);}
-		if (down) {tilt(false);}
+		if (tiltUp) {tilt(true);}
+		if (tiltDown) {tilt(false);}
+		if (tiltLeft) {tiltCamera("L");}
+		if (tiltRight) {tiltCamera("R");}
 		if (strafeLeft) {strafe(false); cameraChanged = true;}
 		if (strafeRight) {strafe(true); cameraChanged = true;}
+		if (jumping) {
+			SimpleVector camPos = getPosition();
+			SimpleVector dir = new SimpleVector(0, -GRAVITY, 0);
+			camPos.add(dir);
+			setPosition(camPos);
+		}
+		if (falling) {
+			SimpleVector camPos = getPosition();
+			SimpleVector dir = new SimpleVector(0, GRAVITY, 0);
+			camPos.add(dir);
+			setPosition(camPos);
+		}
 		if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
 	}
-	*/
 	
+	/*
 	public void performOtherMovement() {
 		if(strafeLeft){moveCamera(Camera.CAMERA_MOVELEFT, 1);}
 		else if(strafeRight){moveCamera(Camera.CAMERA_MOVERIGHT, 1);}
@@ -70,11 +91,13 @@ public class GodCamera extends GameCamera{
 		else if(backward){moveCamera(Camera.CAMERA_MOVEOUT, 1);}
 		else if(jumping){moveCamera(Camera.CAMERA_MOVEUP, 1);}
 		else if(falling){moveCamera(Camera.CAMERA_MOVEDOWN, 1);}
-		}
-	
+	}
+	*/
 	public void resetBools() {
-		left = false;
+		strafeLeft = false;
+		strafeRight = false;
 		right = false;
+		left = false;
 		up = false;
 		down = false;
 		forward = false;
@@ -85,6 +108,8 @@ public class GodCamera extends GameCamera{
 		strafeRight = false;
 		tiltLeft = false;
 		tiltRight = false;
+		tiltUp = false;
+		tiltDown = false;
 		zoomOut = false;
 	}
 	
