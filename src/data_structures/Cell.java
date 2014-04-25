@@ -10,16 +10,17 @@ import com.threed.jpct.Primitives;
  *I'm not sure how the coordinate system works in JPCT
  */
 public class Cell extends Object3D{
+	private boolean corporeal;
 	private int pop;
 	private int[] coordinates = {0, 0, 0};
 
 	public Cell(int size) {
 		super(Primitives.getCube(size), true);
+		corporeal = false;
 		this.initSelf();
 	}
 	
 	private void initSelf(){
-		this.setAdditionalColor(Color.RED);
 		this.setSpecularLighting(true);
 		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 		//this.setTransparency(10);
@@ -44,6 +45,18 @@ public class Cell extends Object3D{
 	
 	public void printCoordinates(){
 		System.out.println(coordinates[0] + " : " + coordinates[1] + " : " + coordinates[2]);
+	}
+	
+	public void birthCell(){
+		corporeal = true;
+	}
+	
+	public void murderCell() {
+		corporeal = false;
+	}
+	
+	public boolean isCorporeal(){
+		return corporeal;
 	}
 	
 	public int[] getCoordinates(){
