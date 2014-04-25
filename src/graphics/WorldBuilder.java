@@ -42,7 +42,7 @@ public class WorldBuilder {
 			public void run(){
 				cellManager.seizurePlease();
 			}
-		},100,150);
+		},100,9000);
 	}
 	
 	public void addBlockRight(Object3D selectedObject){

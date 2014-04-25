@@ -16,6 +16,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 	private Timer timer;
 	private Perspective perspective;
 	private GameCamera camera;
+	private PauseMenu  menu;
 	
 	public KeyHandler(Perspective perspective, GameCamera camera){
 		this.timer = new Timer(10, this);
@@ -82,12 +83,11 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == E) {tiltR = true; }
 		if (key == SPACE) {space = true; }
 		if (key == SHIFT) {shift = true; }
-		if (key == ESC) { perspective.toggleCursor(); }
 		if (key == LEFT) {left = true;}
 		if (key == RIGHT) {right = true;}
 		if (key == UP) {tiltU = true;}
 		if (key == DOWN) {tiltD = true;}
-		
+		if (key == ESC) { perspective.togglePause();}
 	}
 	@Override
 	public void keyReleased(KeyEvent e){
