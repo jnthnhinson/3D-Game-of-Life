@@ -20,7 +20,7 @@ public class WorldBuilder {
 
 		cellManager = new CellManager(10, world);
 
-		boolean steveMode = false;
+		boolean steveMode = true;
 		view = new Perspective(this, world, cellManager, steveMode);
 
 		Light light = new Light(world);
