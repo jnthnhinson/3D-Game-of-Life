@@ -71,7 +71,7 @@ public class Perspective extends JFrame{
 	}
 	
 	protected void loop() throws Exception {
-		buffer = new FrameBuffer(1000, 800, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
+		buffer = new FrameBuffer(1200, 950, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
 		buffer.optimizeBufferAccess();
 		System.out.println("problem after Gl \n\n\n");
 
