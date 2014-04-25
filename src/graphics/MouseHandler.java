@@ -82,9 +82,7 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 		}
 	}
 	@Override
-	public void mouseReleased(MouseEvent e) { 
-		wb.addBlockLeft(view.getSelectedObject());
-	}
+	public void mouseReleased(MouseEvent e) { }
 	@Override
 	public void mousePressed(MouseEvent e) { 
 		this.view.selectPointedObject();
