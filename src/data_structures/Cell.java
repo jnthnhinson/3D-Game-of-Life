@@ -41,6 +41,10 @@ public class Cell extends Object3D{
 		coordinates[2] = z;
 	}
 	
+	public void printCoordinates(){
+		System.out.println(coordinates[0] + " : " + coordinates[1] + " : " + coordinates[2]);
+	}
+	
 	public int[] getCoordinates(){
 		return coordinates;
 	}
