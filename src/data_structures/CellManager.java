@@ -28,7 +28,7 @@ public class CellManager {
 	private void populateGrid(){
 		for(int x = 0; x < size; x ++){
 			for(int y = 0; y < size; y++){
-				for(int z = 0; z < size-1; z++){
+				for(int z = 0; z < size; z++){
 					Cell c = new Cell();
 					System.out.println(x + " : " + y + " : " + z);
 					this.grid[x][y][z] = c;
