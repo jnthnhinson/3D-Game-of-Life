@@ -1,5 +1,6 @@
 package src.graphics;
 
+import com.threed.jpct.Camera;
 import com.threed.jpct.SimpleVector;
 import com.threed.jpct.World;
 
@@ -46,7 +47,7 @@ public class GodCamera extends GameCamera{
 		resetBools();
 	}
 	
-
+	/*
 	private void performOtherMovement() {
 		boolean cameraChanged = false;
 
@@ -60,6 +61,16 @@ public class GodCamera extends GameCamera{
 		if (strafeRight) {strafe(true); cameraChanged = true;}
 		if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
 	}
+	*/
+	
+	public void performOtherMovement() {
+		if(strafeLeft){moveCamera(Camera.CAMERA_MOVELEFT, 1);}
+		else if(strafeRight){moveCamera(Camera.CAMERA_MOVERIGHT, 1);}
+		else if(forward){moveCamera(Camera.CAMERA_MOVEIN, 1);}
+		else if(backward){moveCamera(Camera.CAMERA_MOVEOUT, 1);}
+		else if(jumping){moveCamera(Camera.CAMERA_MOVEUP, 1);}
+		else if(falling){moveCamera(Camera.CAMERA_MOVEDOWN, 1);}
+		}
 	
 	public void resetBools() {
 		left = false;
