@@ -31,7 +31,7 @@ public class CellManager {
 		for(int x = 0; x < size; x ++){
 			for(int y = 0; y < size; y++){
 				for(int z = 0; z < size; z++){
-					Cell c = new Cell();
+					Cell c = new Cell(CellSize.MEDIUM.getSize());
 					System.out.println(x + " : " + y + " : " + z);
 					this.grid[x][y][z] = c;
 					c.setCoordinates(x, y, z);

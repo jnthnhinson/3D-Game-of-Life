@@ -4,6 +4,7 @@ import java.util.TimerTask;
 
 import src.data_structures.Cell;
 import src.data_structures.CellManager;
+import src.data_structures.CellSize;
 
 import com.threed.jpct.Matrix;
 import com.threed.jpct.Object3D;
@@ -48,7 +49,7 @@ public class WorldBuilder {
 	}
 	
 	public void addBlockRight(Object3D selectedObject){
-		Cell cube = new Cell();
+		Cell cube = new Cell(CellSize.MEDIUM.getSize());
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -61,7 +62,7 @@ public class WorldBuilder {
 	}
 
 	public void addBlockLeft(Object3D selectedObject){
-		Cell cube = new Cell();
+		Cell cube = new Cell(CellSize.MEDIUM.getSize());
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -74,7 +75,7 @@ public class WorldBuilder {
 	}
 
 	public void addBlockAbove(Object3D selectedObject){
-		Cell cube = new Cell();
+		Cell cube = new Cell(CellSize.MEDIUM.getSize());
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -87,7 +88,7 @@ public class WorldBuilder {
 	}
 
 	public void addBlockBelow(Object3D selectedObject){
-		Cell cube = new Cell();
+		Cell cube = new Cell(CellSize.MEDIUM.getSize());
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
