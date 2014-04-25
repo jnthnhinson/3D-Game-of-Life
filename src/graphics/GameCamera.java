@@ -20,13 +20,7 @@ public class GameCamera extends Camera {
 		this.playerDirection = new Matrix();
 	}
 	
-	public void tiltCamera(String dir){
-		if(dir == "L"){
-			rotateCameraZ((float)-.03);
-		} else if(dir == "R"){
-			rotateCameraZ((float).03);
-		}
-	}
+	public void tiltCamera(String dir){	}
 
 	public void rotateView(int dx, int dy){	
 		if (dx !=0 || dy != 0){
