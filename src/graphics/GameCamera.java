@@ -18,7 +18,6 @@ public class GameCamera extends Camera {
 	public GameCamera(World world) {
 		this.world = world;
 		this.playerDirection = new Matrix();
-		setFOV(getMinFOV());
 	}
 	
 	public void tiltCamera(String dir){

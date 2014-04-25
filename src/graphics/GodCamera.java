@@ -6,6 +6,7 @@ import com.threed.jpct.World;
 @SuppressWarnings("serial")
 public class GodCamera extends GameCamera{
 	//private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
+	private final static float PLAYER_HEIGHT = 30f;
 
 	
 	private boolean left = false;
@@ -35,7 +36,7 @@ public class GodCamera extends GameCamera{
 		else if(dir == "F")		{forward = true;}
 		else if(dir == "B")		{backward = true;}
 		else if(dir == "U")		{jumping = true;}
-		//else if(dir == "D")		{zoomOut = true;}
+		//else if(dir == "D")	{zoomOut = true;}
 		else if(dir == "TL")	{tiltLeft = true;}
 		else if(dir == "TR")	{tiltRight = true;}
 	}
@@ -57,7 +58,7 @@ public class GodCamera extends GameCamera{
 		if (down) {tilt(false);}
 		if (strafeLeft) {strafe(false); cameraChanged = true;}
 		if (strafeRight) {strafe(true); cameraChanged = true;}
-		//if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
+		if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
 	}
 	
 	public void resetBools() {

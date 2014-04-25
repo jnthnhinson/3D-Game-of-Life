@@ -28,6 +28,7 @@ public class SteveCamera extends GameCamera {
 
 	public SteveCamera(World world) {
 		super(world);
+		//setFOV(getMinFOV());
 	}
 
 	public void updateStatus(String dir) {
