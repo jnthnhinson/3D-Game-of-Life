@@ -24,6 +24,8 @@ public class SteveCamera extends GameCamera {
 	private boolean strafeRight = false;
 	private boolean tiltLeft = false;
 	private boolean tiltRight = false;
+	private boolean tiltUp = false;
+	private boolean tiltDown = false;
 	private boolean zoomOut = false;
 
 	public SteveCamera(World world) {
@@ -32,14 +34,18 @@ public class SteveCamera extends GameCamera {
 	}
 
 	public void updateStatus(String dir) {
-		if(dir == "L")			{strafeLeft = true;}
-		else if(dir == "R")		{strafeRight = true;}
+		if(dir == "SL")			{strafeLeft = true;}
+		else if(dir == "SR")	{strafeRight = true;}
 		else if(dir == "F")		{forward = true;}
 		else if(dir == "B")		{backward = true;}
 		else if(dir == "U")		{jumping = true;}
 		//else if(dir == "D")		{zoomOut = true;}
 		else if(dir == "TL")	{tiltLeft = true;}
 		else if(dir == "TR")	{tiltRight = true;}
+		else if(dir == "TU")	{tiltUp = true;}
+		else if(dir == "TD")	{tiltDown = true;}
+		else if(dir == "L")		{left = true;}
+		else if(dir == "R")		{right = true;}
 	}
 	
 	public void performMovement() {
@@ -69,16 +75,18 @@ public class SteveCamera extends GameCamera {
 		else if (backward) {walk(false);cameraChanged = true;}
 		if (left) {turn(false);}
 		if (right) {turn(true);}
-		if (up) {tilt(true);}
-		if (down) {tilt(false);}
+		if (tiltUp) {tilt(true);}
+		if (tiltDown) {tilt(false);}
 		if (strafeLeft) {strafe(false); cameraChanged = true;}
 		if (strafeRight) {strafe(true); cameraChanged = true;}
 		if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
 	}
 	
 	public void resetBools() {
-		left = false;
+		strafeLeft = false;
+		strafeRight = false;
 		right = false;
+		left = false;
 		up = false;
 		down = false;
 		forward = false;
@@ -89,9 +97,12 @@ public class SteveCamera extends GameCamera {
 		strafeRight = false;
 		tiltLeft = false;
 		tiltRight = false;
+		tiltUp = false;
+		tiltDown = false;
 		zoomOut = false;
 	}
 	
 	
 	
 }
+
