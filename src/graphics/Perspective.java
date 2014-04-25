@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import src.data_structures.Cell;
 import src.data_structures.CellManager;
 
 import com.threed.jpct.Camera;
@@ -27,12 +28,13 @@ public class Perspective extends JFrame{
 	private KeyHandler kh;
 	private FrameBuffer buffer;
 	private World world;
-	private Object3D selectedObject;
+	private Cell selectedObject;
 
 
 	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
-		setSize(800, 600);
+		setSize(1000, 800);
 		setVisible(true);
+		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.wb = wb;
@@ -109,23 +111,21 @@ public class Perspective extends JFrame{
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 		getContentPane().setCursor(blankCursor);
 	}
+	
 	public void showCursor(){
 		getContentPane().setCursor(Cursor.getDefaultCursor());
 	}
 	
-	public int selectPointedObject(){
+	public void selectPointedObject(){
 		SimpleVector ray = Interact2D.reproject2D3DWS(camera, buffer, this.getWidth()/2, this.getHeight()/2).normalize(); 
 		Object[] res = world.calcMinDistanceAndObject3D(camera.getPosition(), ray, 10000F);
 		if (res==null || res[1] == null || res[0] == (Object)Object3D.RAY_MISSES_BOX) { 
 			System.out.println("Did not click an object");
 			selectedObject = null;
-			return -1;
 		}
-		Object3D obj = (Object3D)res[1];
-		obj.setAdditionalColor(Color.blue);
-		System.out.println("SELECTED OBJECT: " + obj.getName());
-		selectedObject = obj;		
-		return obj.getID();
+		selectedObject = (Cell)res[1];
+		selectedObject.setAdditionalColor(Color.blue);
+		selectedObject.printCoordinates();
 	}
 	public Object3D getSelectedObject() {return selectedObject;}
 
