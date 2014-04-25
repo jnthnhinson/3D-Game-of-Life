@@ -31,7 +31,7 @@ public class Perspective extends JFrame{
 
 
 	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
-		setSize(1600, 1200);
+		setSize(800, 600);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
