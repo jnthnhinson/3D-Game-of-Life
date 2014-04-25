@@ -51,9 +51,9 @@ public class KeyHandler implements KeyListener, ActionListener {
 		} if(shift == true){
 			camera.updateStatus("D");
 		} if(tiltR == true){
-			camera.updateStatus("TR");
+			camera.tiltCamera("R");
 		} if(tiltL == true){
-			camera.updateStatus("TL");
+			camera.tiltCamera("L");
 		}
 	}
 
