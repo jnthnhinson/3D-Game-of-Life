@@ -64,7 +64,7 @@ public class CellManager {
 	}
 
 
-	private void getNeighbors(Cell cell){
+	private void pushNeighbors(Cell cell){
 		int[] coor = cell.getCoordinates();
 		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
 			for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
@@ -77,40 +77,133 @@ public class CellManager {
 			}
 		}
 	}
-	
 
-
-	private boolean inRange(int[] coordinates){
-		for(int n : coordinates){
-			if(n < 0 || n >= size){return false;}
-		} return true;
+	private int numCornerNeighbors(Cell cell){
+		int[] coor = cell.getCoordinates();
+		int num = 0;
+		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
+			for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
+				for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
+					int[] curCoor = {x, y, z};
+					if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && isCorner(coor, curCoor) 
+							&& getCell(x, y, z).isCorporeal()){
+						num++;
+					}
+				}
+			}
+		}
+		return num;
 	}
 
-	public Cell getCell(int x, int y, int z){
-		return grid[x][y][z];
+	private int numFlatNeighbors(Cell cell){
+		int[] coor = cell.getCoordinates();
+		int num = 0;
+		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
+			for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
+				for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
+					int[] curCoor = {x, y, z};
+					if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && !isCorner(coor, curCoor) 
+							&& getCell(x, y, z).isCorporeal()){
+						num++;
+					}
+				}
+			}
+		}
+		return num;
 	}
 
-	private boolean coorEquivalence(int[] x, int[] y){
-		for(int n = 0; n < x.length; n++){
-			if(x[n] != y[n]){return false;}
-		} return true;
+	private int totalNeighbors(Cell cell){
+		int num = 0;
+		num = numFlatNeighbors(cell) + numCornerNeighbors(cell);
+		return num;
 	}
 
-	private int generateIndex() {
-		return (int) Math.floor(rand.nextDouble()*size);
-	}
 
-	public void seizurePlease() {
+	public void rules() {
 		Cell c;
 		while(true){
 			for (int x = 0; x < grid[0].length; ++x ){
 				for (int y = 0; y < grid[0].length; y++){
 					for (int z = 0; z < grid[0].length; z++){
 						c = getCell(x, y, z);
-						c.setAdditionalColor(randyC.randomColor());
+						if (totalNeighbors(c) <= 1 && c.isCorporeal()) {
+							c.murderCell();
+						}
+						else if (totalNeighbors(c) >= 5 && totalNeighbors(c) < 8) {
+							c.birthCell();
+						}
+						else if (totalNeighbors(c) >= 8) {
+							c.murderCell();
+						}
 					}
 				}
 			}
 		}
 	}
-}
+	
+			private int numNeighbors(Cell cell){
+				int[] coor = cell.getCoordinates();
+				int num = 0;
+				for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
+					for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
+						for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
+							int[] curCoor = {x, y, z};
+							if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && getCell(x, y, z).isCorporeal()){
+								num++;
+							}
+						}
+					}
+				}
+				return num;
+			}
+
+			private boolean isCorner(int[] ori, int[] cur){
+				return (((ori[0] - cur[0]) * (ori[1] - cur[1]) * (ori[2] - cur[2])) % 2 != 0);
+			}
+
+			private boolean inRange(int[] coordinates){
+				for(int n : coordinates){
+					if(n < 0 || n >= size){return false;}
+				} return true;
+			}
+
+			public Cell getCell(int x, int y, int z){
+				return grid[x][y][z];
+			}
+
+			private boolean coorEquivalence(int[] x, int[] y){
+				for(int n = 0; n < x.length; n++){
+					if(x[n] != y[n]){return false;}
+				} return true;
+			}
+
+			private int generateIndex() {
+				return (int) Math.floor(rand.nextDouble()*size);
+			}
+
+			public void seizurePlease() {
+				Cell c;
+				while(true){
+					for (int x = 0; x < grid[0].length; ++x ){
+						for (int y = 0; y < grid[0].length; y++){
+							for (int z = 0; z < grid[0].length; z++){
+								c = getCell(x, y, z);
+								c.setAdditionalColor(randyC.randomColor());	
+								if (totalNeighbors(c) <= 1 && c.isCorporeal()) {
+									c.murderCell();
+								}
+								else if (totalNeighbors(c) >= 5 && totalNeighbors(c) < 8) {
+									c.birthCell();
+								}
+								else if (totalNeighbors(c) >= 8) {
+									c.murderCell();
+								}
+								if (c.isCorporeal()) {
+									c.printCoordinates();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
