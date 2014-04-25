@@ -17,6 +17,7 @@ public class WorldBuilder {
 	private CellManager cellManager;
 	private Perspective view;
 	private Timer time;
+	private boolean steveMode;
 
 	public WorldBuilder() throws Exception {
 		world = new World();
@@ -25,7 +26,7 @@ public class WorldBuilder {
 		cellManager = new CellManager(10, world);
 		runRandom();
 
-		boolean steveMode = false;
+		steveMode = false;
 		view = new Perspective(this, world, cellManager, steveMode);
 
 		Light light = new Light(world);
@@ -33,6 +34,15 @@ public class WorldBuilder {
 		light.setIntensity(40, 25, 22);
 
 		view.loop();
+	}
+	
+	public void setMode(String type){
+		if (type == "god"){
+			steveMode = false;
+		}
+		else if (type == "steve") {
+			steveMode = true;
+		}
 	}
 	
 	private void runRandom() {

@@ -44,7 +44,7 @@ public class Perspective extends JFrame{
 
 		this.wb = wb;
 		this.world = world;
-		this.pauseMenu = new PauseMenu(this);
+		this.pauseMenu = new PauseMenu(this, wb);
 		this.add(pauseMenu);
 		this.pauseMenu.setVisible(false);
 		this.paused = false;

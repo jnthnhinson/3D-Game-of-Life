@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
@@ -19,30 +20,31 @@ public class PauseMenu extends JPanel{
 	private ArrayList<JButton> buttons;
 	private Border lineBorder;
 	private Perspective perspective;
+	private WorldBuilder wb;
+	private JToggleButton steve2God;
 	
-	public PauseMenu(Perspective perspective){
+	public PauseMenu(Perspective perspective, WorldBuilder wb){
 		menu = this;
 		this.setPreferredSize(new Dimension(400,250));
+		this.wb = wb;
 		this.perspective = perspective;
 		buttons = new ArrayList<JButton>();
 		
 		JButton closeMenuButton = new JButton("Close Menu");
 		JButton quitButton = new JButton("Exit Game");
-//		JButton b3 = new JButton("Is");
-//		JButton b4 = new JButton("The");
-//		JButton b5 = new JButton("Pause Menu");
+		steve2God = new JToggleButton("Steve Mode");
+
 		JTextArea instructions = new JTextArea(" Forwards (w)\n Backwards (s)\n Left (a)\n Right(d)\n Rotate Left (q)\n Rotate Right (e)\n\n Ascend (space)\n Descend (shift) ");
 		lineBorder = BorderFactory.createLineBorder(Color.black);
 		instructions.setBorder(lineBorder);
 		
 		closeMenuButton.addActionListener(new closeMenu());
 		quitButton.addActionListener(new exitGame());
-//		b3.addActionListener(new OpenRuleChanger());
-//		b4.addActionListener(new ChangeCamera());
-//		b5.addActionListener(new Resume());
+		steve2God.addActionListener(new steve2God());
 
-		buttons.add(closeMenuButton);buttons.add(quitButton);//buttons.add(b3);buttons.add(b4);buttons.add(b5);
 
+		buttons.add(closeMenuButton);buttons.add(quitButton);
+		this.add(steve2God);
 		for(JButton button: buttons){
 			this.add(button);
 		}
@@ -67,10 +69,18 @@ public class PauseMenu extends JPanel{
 		}
 	}
 	
-	private class SetWorldSize implements ActionListener{
+	private class steve2God implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//boolean paused = false;
+			if (steve2God.getText() == "Steve Mode"){
+				steve2God.setText("God Mode");
+				wb.setMode("god");
+			}
+			else if (steve2God.getText() == "God Mode"){
+				steve2God.setText("Steve Mode");
+				wb.setMode("steve");
+			}
+			
 		}
 	}
 	
