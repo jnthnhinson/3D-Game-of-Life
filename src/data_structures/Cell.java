@@ -13,8 +13,8 @@ public class Cell extends Object3D{
 	private int pop;
 	private int[] coordinates = {0, 0, 0};
 
-	public Cell() {
-		super(Primitives.getCube(1), true);
+	public Cell(int size) {
+		super(Primitives.getCube(size), true);
 		this.initSelf();
 	}
 	
@@ -22,10 +22,11 @@ public class Cell extends Object3D{
 		this.setAdditionalColor(Color.RED);
 		this.setSpecularLighting(true);
 		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
-		//this.setTransparency(0);
+		//this.setTransparency(10);
 		this.rotateY((float)(Math.PI*45)/180);
 		this.compile();
 	}
+	
 	
 	public void incPop(boolean pol){
 		if(pol){

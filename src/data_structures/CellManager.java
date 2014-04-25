@@ -7,20 +7,22 @@ import com.threed.jpct.Matrix;
 import com.threed.jpct.World;
 
 public class CellManager {
-	
+
 	private Cell[][][] grid;
 	private Stack<Cell> updates;
 	private World world;
 	private Random rand;
 	private int size;
-	
+	private RandomColor randyC;
+
 	public CellManager(int size, World w){
+		randyC = new RandomColor();
 		grid = new Cell[size][size][size];
 		updates = new Stack<Cell>();
 		rand = new Random();
 		this.size = size;
 		this.world = w;
-		
+
 		populateGrid();
 		populateWorld();
 	}
@@ -29,7 +31,7 @@ public class CellManager {
 		for(int x = 0; x < size; x ++){
 			for(int y = 0; y < size; y++){
 				for(int z = 0; z < size; z++){
-					Cell c = new Cell();
+					Cell c = new Cell(CellSize.MEDIUM.getSize());
 					System.out.println(x + " : " + y + " : " + z);
 					this.grid[x][y][z] = c;
 					c.setCoordinates(x, y, z);
@@ -37,22 +39,23 @@ public class CellManager {
 			}
 		}
 	}
-		
+
 	private void populateWorld(){
-		int dist = 3;
+		float dist = CellSize.MEDIUM.getSize() * 2;
 		float newx = 0; float newy = 0; float newz = 0;
-		
+		Cell c;
+
 		for(int z = 01; z < size-1; z++){
 			newz = (float) dist*z;
 			for(int y = 0; y < size-1; y++){
 				newy = (float) dist*y;
 				for(int x = 0; x < size-1; x++){
 					newx = (float) dist*x;
-					
+
 					Matrix m = new Matrix();
 					m.translate(newx, newy, newz);
-					
-					Cell c = grid[x][y][z];
+
+					c = getCell(x, y, z);
 					c.setTranslationMatrix(m);
 					world.addObject(c);
 				} 
@@ -60,7 +63,7 @@ public class CellManager {
 		}
 	}
 
-	
+
 	private void getNeighbors(Cell cell){
 		int[] coor = cell.getCoordinates();
 		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
@@ -75,24 +78,39 @@ public class CellManager {
 		}
 	}
 	
-	
+
+
 	private boolean inRange(int[] coordinates){
 		for(int n : coordinates){
 			if(n < 0 || n >= size){return false;}
 		} return true;
 	}
-	
+
 	public Cell getCell(int x, int y, int z){
 		return grid[x][y][z];
 	}
-	
+
 	private boolean coorEquivalence(int[] x, int[] y){
 		for(int n = 0; n < x.length; n++){
 			if(x[n] != y[n]){return false;}
 		} return true;
 	}
-	
-	private int generateIndex(){
+
+	private int generateIndex() {
 		return (int) Math.floor(rand.nextDouble()*size);
+	}
+
+	public void seizurePlease() {
+		Cell c;
+		while(true){
+			for (int x = 0; x < grid[0].length; ++x ){
+				for (int y = 0; y < grid[0].length; y++){
+					for (int z = 0; z < grid[0].length; z++){
+						c = getCell(x, y, z);
+						c.setAdditionalColor(randyC.randomColor());
+					}
+				}
+			}
+		}
 	}
 }

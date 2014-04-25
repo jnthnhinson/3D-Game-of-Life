@@ -125,6 +125,7 @@ public class Perspective extends JFrame{
 		}
 		selectedObject = (Cell)res[1];
 		if (selectedObject != null) {selectedObject.setAdditionalColor(Color.blue);}
+		//selectedObject.printCoordinates();
 	}
 	public Object3D getSelectedObject() {return selectedObject;}
 
