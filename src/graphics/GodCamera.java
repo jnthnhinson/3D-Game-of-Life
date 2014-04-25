@@ -6,12 +6,8 @@ import com.threed.jpct.World;
 
 @SuppressWarnings("serial")
 public class GodCamera extends GameCamera{
-	private final static float GRAVITY = 1f;
-	
-
-	//private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
+	private final static float SPEED = 5f;
 	private final static float PLAYER_HEIGHT = 30f;	
-	private final static int speed = 5;
 	public GodCamera(World world) {
 		super(world);
 	}
@@ -19,14 +15,14 @@ public class GodCamera extends GameCamera{
 
 	public void jump(){
 		SimpleVector camPos = getPosition();
-		SimpleVector dir = new SimpleVector(0, -GRAVITY, 0);
+		SimpleVector dir = new SimpleVector(0, -SPEED, 0);
 		camPos.add(dir);
 		setPosition(camPos);
 	}
 	
 	public void fall(){
 		SimpleVector camPos = getPosition();
-		SimpleVector dir = new SimpleVector(0, GRAVITY, 0);
+		SimpleVector dir = new SimpleVector(0, SPEED, 0);
 		camPos.add(dir);
 		setPosition(camPos);
 	}
@@ -38,6 +34,12 @@ public class GodCamera extends GameCamera{
 		else if(dir == "B"){this.moveCamera(Camera.CAMERA_MOVEOUT, speed);}
 		else if(dir == "U"){this.moveCamera(Camera.CAMERA_MOVEUP, speed);}
 		else if(dir == "D"){this.moveCamera(Camera.CAMERA_MOVEDOWN, speed);}
+		if(dir == "SL"){this.moveCamera(Camera.CAMERA_MOVELEFT, SPEED);}
+		else if(dir == "SR"){this.moveCamera(Camera.CAMERA_MOVERIGHT, SPEED);}
+		else if(dir == "F"){this.moveCamera(Camera.CAMERA_MOVEIN, SPEED);}
+		else if(dir == "B"){this.moveCamera(Camera.CAMERA_MOVEOUT, SPEED);}
+		else if(dir == "U"){this.jump();}
+		else if(dir == "D"){this.fall();}
 		else if(dir == "TL"){tiltCamera("TL");}
 		else if(dir == "TR"){tiltCamera("TR");}
 	}
