@@ -13,10 +13,10 @@ public class CellManager {
 	private World world;
 	private Random rand;
 	private int size;
-	private RandomColor randyC;
+	private RandomColor getColor;
 
 	public CellManager(int size, World w){
-		randyC = new RandomColor();
+		getColor = new RandomColor();
 		grid = new Cell[size][size][size];
 		updates = new Stack<Cell>();
 		rand = new Random();
@@ -31,7 +31,7 @@ public class CellManager {
 		for(int x = 0; x < size; x ++){
 			for(int y = 0; y < size; y++){
 				for(int z = 0; z < size; z++){
-					Cell c = new Cell(CellSize.MEDIUM.getSize());
+					Cell c = new Cell(CellSize.SMALL.getSize());
 					System.out.println(x + " : " + y + " : " + z);
 					this.grid[x][y][z] = c;
 					c.setCoordinates(x, y, z);
@@ -41,7 +41,7 @@ public class CellManager {
 	}
 
 	private void populateWorld(){
-		float dist = CellSize.MEDIUM.getSize() * 2;
+		float dist = CellSize.SMALL.getSize() * 2;
 		float newx = 0; float newy = 0; float newz = 0;
 		Cell c;
 
@@ -86,7 +86,7 @@ public class CellManager {
 				for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
 					int[] curCoor = {x, y, z};
 					if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && isCorner(coor, curCoor) 
-							&& getCell(x, y, z).isCorporeal()){
+							&& getCell(x, y, z).isDead(cell)){
 						num++;
 					}
 				}
@@ -103,7 +103,7 @@ public class CellManager {
 				for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
 					int[] curCoor = {x, y, z};
 					if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && !isCorner(coor, curCoor) 
-							&& getCell(x, y, z).isCorporeal()){
+							&& getCell(x, y, z).isAlive(cell)){
 						num++;
 					}
 				}
@@ -126,14 +126,14 @@ public class CellManager {
 				for (int y = 0; y < grid[0].length; y++){
 					for (int z = 0; z < grid[0].length; z++){
 						c = getCell(x, y, z);
-						if (totalNeighbors(c) <= 1 && c.isCorporeal()) {
-							c.murderCell();
+						if (totalNeighbors(c) <= 1 && c.isDead(c)) {
+							c.murderCell(c);
 						}
 						else if (totalNeighbors(c) >= 5 && totalNeighbors(c) < 8) {
-							c.birthCell();
+							c.birthCell(c);
 						}
 						else if (totalNeighbors(c) >= 8) {
-							c.murderCell();
+							c.murderCell(c);
 						}
 					}
 				}
@@ -148,7 +148,7 @@ public class CellManager {
 					for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
 						for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
 							int[] curCoor = {x, y, z};
-							if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && getCell(x, y, z).isCorporeal()){
+							if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && getCell(x, y, z).isDead(cell)){
 								num++;
 							}
 						}
@@ -181,6 +181,21 @@ public class CellManager {
 				return (int) Math.floor(rand.nextDouble()*size);
 			}
 
+			private void rules(Cell c) {
+				if (totalNeighbors(c) <= 1 && c.isDead(c)) {
+					c.murderCell(c);
+				}
+				else if (totalNeighbors(c) >= 5 && totalNeighbors(c) < 8) {
+					c.birthCell(c);
+				}
+				else if (totalNeighbors(c) >= 8) {
+					c.murderCell(c);
+				}
+				else if (numFlatNeighbors(c) > 4) {
+					c.murderCell(c);
+				}
+			}
+			
 			public void seizurePlease() {
 				Cell c;
 				while(true){
@@ -188,22 +203,18 @@ public class CellManager {
 						for (int y = 0; y < grid[0].length; y++){
 							for (int z = 0; z < grid[0].length; z++){
 								c = getCell(x, y, z);
-								c.setAdditionalColor(randyC.randomColor());	
-								if (totalNeighbors(c) <= 1 && c.isCorporeal()) {
-									c.murderCell();
+								
+								if (y % 2 == 0 || z % 2 != 0 ) {
+									c.birthCell(c);
+									c.setVisibility(true);
 								}
-								else if (totalNeighbors(c) >= 5 && totalNeighbors(c) < 8) {
-									c.birthCell();
+								if (c.isAlive(c)) {
+									c.setAdditionalColor(getColor.randomColor());	
 								}
-								else if (totalNeighbors(c) >= 8) {
-									c.murderCell();
-								}
-								if (c.isCorporeal()) {
-									c.printCoordinates();
+								rules(c);
 								}
 							}
 						}
 					}
 				}
 			}
-		}

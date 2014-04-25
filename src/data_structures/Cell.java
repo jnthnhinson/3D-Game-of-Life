@@ -1,7 +1,5 @@
 package src.data_structures;
 
-import java.awt.Color;
-
 import com.threed.jpct.Object3D;
 import com.threed.jpct.Primitives;
 
@@ -9,32 +7,31 @@ import com.threed.jpct.Primitives;
  *Create one object at instantiation and just use the copy constructor to clone it as many times as needed?
  *I'm not sure how the coordinate system works in JPCT
  */
+@SuppressWarnings("serial")
 public class Cell extends Object3D{
-	private boolean corporeal;
+	private boolean isAlive;
 	private int pop;
 	private int[] coordinates = {0, 0, 0};
 
 	public Cell(int size) {
 		super(Primitives.getCube(size), true);
-		corporeal = false;
+		isAlive = false;
 		this.initSelf();
 	}
 	
 	private void initSelf(){
 		this.setSpecularLighting(true);
 		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
-		//this.setTransparency(10);
+		this.setTransparency(50);
+		this.setVisibility(false);
 		this.rotateY((float)(Math.PI*45)/180);
 		this.compile();
 	}
 	
 	
 	public void incPop(boolean pol){
-		if(pol){
-			pop++;
-		}else{
-			pop--;
-		}
+		if(pol){pop++;
+		}else{pop--;}
 	}
 	
 	public void setCoordinates(int x, int y, int z){
@@ -47,16 +44,23 @@ public class Cell extends Object3D{
 		System.out.println(coordinates[0] + " : " + coordinates[1] + " : " + coordinates[2]);
 	}
 	
-	public void birthCell(){
-		corporeal = true;
+	public void birthCell(Cell c){
+		c.isAlive = true;
 	}
 	
-	public void murderCell() {
-		corporeal = false;
+	public void murderCell(Cell c) {
+		c.isAlive = false;
 	}
 	
-	public boolean isCorporeal(){
-		return corporeal;
+	public boolean isDead(Cell c){
+		return c.isAlive;
+	}
+	
+	public boolean isAlive(Cell c) {
+		if (c.isAlive = true){
+			return true;
+		}
+		else {return false;}
 	}
 	
 	public int[] getCoordinates(){
