@@ -30,7 +30,7 @@ public class Perspective extends JFrame{
 	private Object3D selectedObject;
 
 
-	public Perspective(WorldBuilder wb, World world, CellManager cellManager) {
+	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
 		setSize(800, 600);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,11 +38,7 @@ public class Perspective extends JFrame{
 		this.wb = wb;
 		this.world = world;
 
-		this.camera = new GameCamera(world);
-		world.setCameraTo(camera);
-		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
-		camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
-
+		initCamera(isSteveMode, cellManager);
 		initListeners();
 		hideCursor();
 
@@ -54,6 +50,24 @@ public class Perspective extends JFrame{
 		}
 	}
 
+	private void initCamera(boolean isSteveMode, CellManager cellManager) {
+		if (isSteveMode) 	{this.camera = new SteveCamera(world);}
+		else 			{this.camera = new GodCamera(world);}
+		
+		world.setCameraTo(camera);
+		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
+		camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
+	}
+	
+	private void initListeners(){
+		kh = new KeyHandler(this, camera);
+		mh = new MouseHandler(this, wb, camera);
+
+		this.addKeyListener(kh);
+		this.addMouseListener(mh);
+		this.addMouseMotionListener(mh);
+	}
+	
 	protected void loop() throws Exception {
 		buffer = new FrameBuffer(1000, 800, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
 		buffer.optimizeBufferAccess();
@@ -75,14 +89,7 @@ public class Perspective extends JFrame{
 		System.exit(0);
 	}
 
-	private void initListeners(){
-		kh = new KeyHandler(this, camera);
-		mh = new MouseHandler(this, wb, camera);
-
-		this.addKeyListener(kh);
-		this.addMouseListener(mh);
-		this.addMouseMotionListener(mh);
-	}
+	
 	
 	
 
