@@ -1,7 +1,7 @@
 package src.data_structures;
 
 public enum CellSize {
-	SMALL(1), MEDIUM(2), LARGE(3);
+	SMALL(10), MEDIUM(15), LARGE(20);
 	
 	private int size;
 	

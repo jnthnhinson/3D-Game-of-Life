@@ -13,8 +13,8 @@ public class Cell extends Object3D{
 	private int pop;
 	private int[] coordinates = {0, 0, 0};
 
-	public Cell() {
-		super(Primitives.getCube(1), true);
+	public Cell(int size) {
+		super(Primitives.getCube(size), true);
 		this.initSelf();
 	}
 	
