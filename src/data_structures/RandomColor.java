@@ -3,6 +3,7 @@ package src.data_structures;
 import java.awt.Color;
 import java.util.Random;
 
+
 public class RandomColor{
 	private Color partyColor;
 	

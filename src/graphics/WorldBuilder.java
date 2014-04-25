@@ -43,7 +43,6 @@ public class WorldBuilder {
 			@Override
 			public void run(){
 				cellManager.seizurePlease();
-				System.out.println("hi");
 			}
 		},100,150);
 	}

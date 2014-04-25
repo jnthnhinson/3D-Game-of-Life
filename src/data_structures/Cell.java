@@ -27,6 +27,7 @@ public class Cell extends Object3D{
 		this.compile();
 	}
 	
+	
 	public void incPop(boolean pol){
 		if(pol){
 			pop++;

@@ -77,6 +77,7 @@ public class CellManager {
 			}
 		}
 	}
+	
 
 
 	private boolean inRange(int[] coordinates){
