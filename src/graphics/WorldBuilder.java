@@ -18,7 +18,6 @@ public class WorldBuilder {
 	private Perspective view;
 	private Timer time;
 
-
 	public WorldBuilder() throws Exception {
 		world = new World();
 		world.setAmbientLight(150, 150, 150);
@@ -33,9 +32,7 @@ public class WorldBuilder {
 		light.setPosition(new SimpleVector(0, -80, 0));
 		light.setIntensity(40, 25, 22);
 
-
 		view.loop();
-
 	}
 	
 	private void runRandom() {
