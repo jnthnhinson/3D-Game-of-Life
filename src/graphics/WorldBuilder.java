@@ -21,6 +21,7 @@ public class WorldBuilder {
 	public WorldBuilder() throws Exception {
 		world = new World();
 		world.setAmbientLight(150, 150, 150);
+		world.setClippingPlanes(0, 5000);
 
 		cellManager = new CellManager(10, world);
 		runRandom();
