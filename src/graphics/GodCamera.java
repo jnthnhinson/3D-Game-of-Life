@@ -6,8 +6,6 @@ import com.threed.jpct.World;
 
 @SuppressWarnings("serial")
 public class GodCamera extends GameCamera{
-	//private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
-	private final static float PLAYER_HEIGHT = 30f;
 	private final static float GRAVITY = 1f;
 	
 
@@ -26,6 +24,8 @@ public class GodCamera extends GameCamera{
  		else if(dir == "TR")	{tiltCamera("R");}
 		else if(dir == "TU")	{this.jump();}
 		else if(dir == "TD")	{this.fall();}
+		else if(dir == "R")		{turn(true);}
+		else if(dir == "L")		{turn(false);}
 	}
 	
 
