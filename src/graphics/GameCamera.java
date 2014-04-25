@@ -19,6 +19,8 @@ public class GameCamera extends Camera {
 		this.world = world;
 		this.playerDirection = new Matrix();
 	}
+	
+	public void tiltCamera(String dir){}
 
 	public void rotateView(int dx, int dy){	
 		if (dx !=0 || dy != 0){
@@ -30,8 +32,8 @@ public class GameCamera extends Camera {
 		}
 	}
 	
-	public void performMovement() {}
 	
+	public void performMovement() {}
 	public void updateStatus(String status) {}
 
 	protected void walk(boolean isForward) {
