@@ -5,6 +5,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="RESOURCES/jpct.jar"/>
 	<classpathentry kind="lib" path="RESOURCES/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="RESOURCES/lwjgl.jar"/>
+	<classpathentry kind="lib" path="RESOURCES/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/export/home/f12/arjmandibs/git/3D-Game-of-Life/RESOURCES/native/linux"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -83,8 +83,11 @@ public class Perspective extends JFrame{
 		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
 		buffer.optimizeBufferAccess();
 		System.out.println("problem after Gl \n\n\n");
-
-		while (isShowing()) {
+		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
+		buffer.enableRenderer(IRenderer.RENDERER_OPENGL);
+		
+		
+		while (!org.lwjgl.opengl.Display.isCloseRequested()) {
 			if(!paused){
 				buffer.clear(java.awt.Color.BLACK);
 				world.renderScene(buffer);
@@ -92,8 +95,8 @@ public class Perspective extends JFrame{
 
 				camera.performMovement();
 				buffer.update();
-				buffer.display(getGraphics());
-				Thread.sleep(10);
+				buffer.displayGLOnly();
+//				Thread.sleep(10);
 			}
 		}
 		buffer.disableRenderer(IRenderer.RENDERER_OPENGL);
