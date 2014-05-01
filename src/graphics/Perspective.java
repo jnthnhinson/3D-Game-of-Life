@@ -2,6 +2,7 @@ package src.graphics;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -82,10 +83,9 @@ public class Perspective extends JFrame{
 	protected void loop() throws Exception {
 		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_NORMAL																																																																																																																																																																											);
 		buffer.optimizeBufferAccess();
-		System.out.println("problem after Gl \n\n\n");
 		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
 		buffer.enableRenderer(IRenderer.RENDERER_OPENGL);
-		
+//		this.setVisible(false);
 		
 		while (!org.lwjgl.opengl.Display.isCloseRequested()) {
 			if(!paused){
@@ -95,7 +95,9 @@ public class Perspective extends JFrame{
 
 				camera.performMovement();
 				buffer.update();
-				buffer.displayGLOnly();
+				this.paint(buffer.getOutputBuffer());
+//				buffer.displayGLOnly();
+//				buffer.display(getGraphics());
 //				Thread.sleep(10);
 			}
 		}
@@ -105,6 +107,10 @@ public class Perspective extends JFrame{
 		System.exit(0);
 	}
 
+	
+	public void paint(Image image){
+		
+	}
 
 	public void togglePause(){
 		toggleCursor();
