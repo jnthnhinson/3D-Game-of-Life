@@ -41,7 +41,7 @@ public class CellManager {
 	}
 
 	private void populateWorld(){
-		float dist = CellSize.SMALL.getSize() * 2;
+		float dist = CellSize.SMALL.getSize() * (float)2.3;
 		float newx = 0; float newy = 0; float newz = 0;
 		Cell c;
 

@@ -3,6 +3,7 @@ package src.graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
-public class PauseMenu extends JPanel{
+public class PauseMenu extends Panel{
 	private PauseMenu menu;
 	private ArrayList<JButton> buttons;
 	private Border lineBorder;
@@ -50,10 +51,10 @@ public class PauseMenu extends JPanel{
 		}
 		this.add(instructions);
 	}
-	@Override
-	public void paintComponent(Graphics g){
-		repaint();
-	}
+//	@Override
+//	public void paintComponent(Graphics g){
+//		repaint();
+//	}
 	
 	private class closeMenu implements ActionListener{
 		@Override

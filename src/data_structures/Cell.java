@@ -1,5 +1,8 @@
 package src.data_structures;
 
+import java.awt.Color;
+import java.util.Random;
+
 import com.threed.jpct.Object3D;
 import com.threed.jpct.Primitives;
 
@@ -20,10 +23,11 @@ public class Cell extends Object3D{
 	}
 	
 	private void initSelf(){
+		Random rand = new Random();
 		this.setSpecularLighting(true);
 		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
-		this.setTransparency(50);
-		this.setVisibility(false);
+		this.setTransparency(0);
+		this.setAdditionalColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 		this.rotateY((float)(Math.PI*45)/180);
 		this.compile();
 	}

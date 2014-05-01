@@ -25,7 +25,7 @@ public class WorldBuilder {
 		world.setClippingPlanes(0, 5000);
 
 		cellManager = new CellManager(10, world);
-		runRandom();
+//		runRandom();
 
 		steveMode = false;
 		view = new Perspective(this, world, cellManager, steveMode);

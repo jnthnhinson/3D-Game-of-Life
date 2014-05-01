@@ -67,23 +67,23 @@ public class Perspective extends JFrame{
 	}
 	
 	private void initBuffer(){
-		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_NORMAL																																																																																																																																																																											);
+		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY																																																																																																																																																																											);
 		buffer.optimizeBufferAccess();
 		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
 		buffer.enableRenderer(IRenderer.RENDERER_OPENGL);
-
 	}
 
 	private void initCanvas(){
 		canvas = new Canvas();
 		canvas.setVisible(true);
 		canvas = buffer.enableGLCanvasRenderer();
+		
 		this.add(canvas);
 	}
 	
 	private void initPauseMenu(){
 		this.pauseMenu = new PauseMenu(this, wb);
-		this.pauseMenu.setVisible(false);
+		this.pauseMenu.setVisible(true);
 		this.paused = false;
 		this.add(pauseMenu);
 	}
@@ -101,9 +101,12 @@ public class Perspective extends JFrame{
 		kh = new KeyHandler(this, camera);
 		mh = new MouseHandler(this, wb, camera);
 
-		this.addKeyListener(kh);
+		canvas.addKeyListener(kh);
 		canvas.addMouseListener(mh);
 		canvas.addMouseMotionListener(mh);
+		this.addKeyListener(kh);
+		this.addMouseListener(mh);
+		this.addMouseMotionListener(mh);
 	}
 
 	protected void loop() throws Exception {
@@ -118,6 +121,7 @@ public class Perspective extends JFrame{
 				buffer.display(canvas.getGraphics());
 				canvas.repaint();
 			}
+			this.requestFocus();
 		}
 		buffer.disableRenderer(IRenderer.RENDERER_OPENGL);
 		buffer.dispose();
@@ -125,17 +129,10 @@ public class Perspective extends JFrame{
 		System.exit(0);
 	}
 
-
-
 	public void togglePause(){
 		toggleCursor();
-		if(paused == true){
-			paused = false;
-			pauseMenu.setVisible(false);
-		} else {
-			paused = true;
-			pauseMenu.setVisible(true);
-		}
+		paused = !paused;
+		canvas.setVisible(!canvas.isVisible());
 	}
 
 
