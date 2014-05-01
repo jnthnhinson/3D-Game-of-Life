@@ -95,7 +95,7 @@ public class CellManager {
 		return num;
 	}
 
-	private int numFlatNeighbors(Cell cell){
+	int numFlatNeighbors(Cell cell){
 		int[] coor = cell.getCoordinates();
 		int num = 0;
 		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
@@ -112,7 +112,7 @@ public class CellManager {
 		return num;
 	}
 
-	private int totalNeighbors(Cell cell){
+	int totalNeighbors(Cell cell){
 		int num = 0;
 		num = numFlatNeighbors(cell) + numCornerNeighbors(cell);
 		return num;
