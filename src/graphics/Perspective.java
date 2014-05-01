@@ -31,8 +31,8 @@ public class Perspective extends JFrame{
 	private FrameBuffer buffer;
 	private World world;
 	private Cell selectedObject;
-	private final int windowx = 1300;
-	private final int windowy = 1000;
+	private final int windowx = 1280;
+	private final int windowy = 720;
 
 
 	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
@@ -41,7 +41,7 @@ public class Perspective extends JFrame{
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getFocusableWindowState();
-
+		
 		this.wb = wb;
 		this.world = world;
 		this.pauseMenu = new PauseMenu(this, wb);
@@ -80,7 +80,7 @@ public class Perspective extends JFrame{
 	}
 
 	protected void loop() throws Exception {
-		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
+		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_NORMAL																																																																																																																																																																											);
 		buffer.optimizeBufferAccess();
 		System.out.println("problem after Gl \n\n\n");
 		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
