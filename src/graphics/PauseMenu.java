@@ -24,6 +24,8 @@ public class PauseMenu extends Panel{
 	private WorldBuilder wb;
 	private JToggleButton steve2God;
 	
+	private JButton partyButton;
+	
 	public PauseMenu(Perspective perspective, WorldBuilder wb){
 		menu = this;
 		this.setPreferredSize(new Dimension(400,250));
@@ -34,6 +36,7 @@ public class PauseMenu extends Panel{
 		JButton closeMenuButton = new JButton("Close Menu");
 		JButton quitButton = new JButton("Exit Game");
 		steve2God = new JToggleButton("Steve Mode");
+		partyButton = new JButton("Party On");
 
 		JTextArea instructions = new JTextArea(" Forwards (w)\n Backwards (s)\n Left (a)\n Right(d)\n Rotate Left (q)\n Rotate Right (e)\n\n Ascend (space)\n Descend (shift) ");
 		lineBorder = BorderFactory.createLineBorder(Color.black);
@@ -42,9 +45,10 @@ public class PauseMenu extends Panel{
 		closeMenuButton.addActionListener(new closeMenu());
 		quitButton.addActionListener(new exitGame());
 		steve2God.addActionListener(new steve2God());
+		partyButton.addActionListener(new toggleParty());
 
 
-		buttons.add(closeMenuButton);buttons.add(quitButton);
+		buttons.add(closeMenuButton);buttons.add(quitButton); buttons.add(partyButton);
 		this.add(steve2God);
 		for(JButton button: buttons){
 			this.add(button);
@@ -92,6 +96,17 @@ public class PauseMenu extends Panel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			//boolean paused = false;
+		}
+	}
+	
+	private class toggleParty implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (partyButton.getText() == "Party On"){
+				partyButton.setText("Party Off");
+			}else{
+				partyButton.setText("Party On");
+			}
 		}
 	}
 	
