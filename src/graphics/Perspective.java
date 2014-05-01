@@ -1,5 +1,6 @@
 package src.graphics;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
@@ -8,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+
+import org.lwjgl.opengl.Display;
 
 import src.data_structures.Cell;
 import src.data_structures.CellManager;
@@ -31,6 +34,7 @@ public class Perspective extends JFrame{
 	private KeyHandler kh;
 	private FrameBuffer buffer;
 	private World world;
+	private Canvas canvas;
 	private Cell selectedObject;
 	private final int windowx = 1280;
 	private final int windowy = 720;
@@ -39,17 +43,17 @@ public class Perspective extends JFrame{
 	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
 		setSize(windowx, windowy);
 		setVisible(true);
-		this.setLocationRelativeTo(null);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getFocusableWindowState();
+		getFocusableWindowState();
 		
 		this.wb = wb;
 		this.world = world;
-		this.pauseMenu = new PauseMenu(this, wb);
-		this.add(pauseMenu);
-		this.pauseMenu.setVisible(false);
-		this.paused = false;
 
+		
+		initBuffer();
+		initCanvas();
+		initPauseMenu();
 		initCamera(isSteveMode, cellManager);
 		initListeners();
 		hideCursor();
@@ -61,7 +65,29 @@ public class Perspective extends JFrame{
 			// What problems could occur and how should we communicate this?
 		}
 	}
+	
+	private void initBuffer(){
+		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_NORMAL																																																																																																																																																																											);
+		buffer.optimizeBufferAccess();
+		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
+		buffer.enableRenderer(IRenderer.RENDERER_OPENGL);
 
+	}
+
+	private void initCanvas(){
+		canvas = new Canvas();
+		canvas.setVisible(true);
+		canvas = buffer.enableGLCanvasRenderer();
+		this.add(canvas);
+	}
+	
+	private void initPauseMenu(){
+		this.pauseMenu = new PauseMenu(this, wb);
+		this.pauseMenu.setVisible(false);
+		this.paused = false;
+		this.add(pauseMenu);
+	}
+	
 	private void initCamera(boolean isSteveMode, CellManager cellManager) {
 		if (isSteveMode) 	{this.camera = new SteveCamera(world);}
 		else 			{this.camera = new GodCamera(world);}
@@ -76,18 +102,12 @@ public class Perspective extends JFrame{
 		mh = new MouseHandler(this, wb, camera);
 
 		this.addKeyListener(kh);
-		this.addMouseListener(mh);
-		this.addMouseMotionListener(mh);
+		canvas.addMouseListener(mh);
+		canvas.addMouseMotionListener(mh);
 	}
 
 	protected void loop() throws Exception {
-		buffer = new FrameBuffer(windowx, windowy, FrameBuffer.SAMPLINGMODE_NORMAL																																																																																																																																																																											);
-		buffer.optimizeBufferAccess();
-		buffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
-		buffer.enableRenderer(IRenderer.RENDERER_OPENGL);
-//		this.setVisible(false);
-		
-		while (!org.lwjgl.opengl.Display.isCloseRequested()) {
+		while (isShowing()) {
 			if(!paused){
 				buffer.clear(java.awt.Color.BLACK);
 				world.renderScene(buffer);
@@ -95,10 +115,8 @@ public class Perspective extends JFrame{
 
 				camera.performMovement();
 				buffer.update();
-				this.paint(buffer.getOutputBuffer());
-//				buffer.displayGLOnly();
-//				buffer.display(getGraphics());
-//				Thread.sleep(10);
+				buffer.display(canvas.getGraphics());
+				canvas.repaint();
 			}
 		}
 		buffer.disableRenderer(IRenderer.RENDERER_OPENGL);
@@ -107,10 +125,7 @@ public class Perspective extends JFrame{
 		System.exit(0);
 	}
 
-	
-	public void paint(Image image){
-		
-	}
+
 
 	public void togglePause(){
 		toggleCursor();
