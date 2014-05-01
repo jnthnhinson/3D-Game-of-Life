@@ -51,11 +51,7 @@ public class PauseMenu extends Panel{
 		}
 		this.add(instructions);
 	}
-//	@Override
-//	public void paintComponent(Graphics g){
-//		repaint();
-//	}
-	
+
 	private class closeMenu implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
