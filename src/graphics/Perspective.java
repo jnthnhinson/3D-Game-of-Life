@@ -36,7 +36,7 @@ public class Perspective extends JFrame{
 	private World world;
 	private Canvas canvas;
 	private Cell selectedObject;
-	private int ticker;
+	private long startTime, differential;
 	private final int windowx = 1280, windowy = 720;
 
 
@@ -49,7 +49,7 @@ public class Perspective extends JFrame{
 		
 		this.wb = wb;
 		this.world = world;
-		ticker = 0;
+		startTime = System.currentTimeMillis();
 
 		
 		initBuffer();
@@ -94,8 +94,9 @@ public class Perspective extends JFrame{
 		else 			{this.camera = new GodCamera(world);}
 
 		world.setCameraTo(camera);
-		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
-		camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
+		//camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
+		//camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
+		camera.setPosition(100, -75, 100);
 	}
 
 	private void initListeners(){
@@ -122,10 +123,10 @@ public class Perspective extends JFrame{
 				buffer.display(canvas.getGraphics());
 				canvas.repaint();
 				
-				if(ticker % 100 == 0){
+				if(System.currentTimeMillis() - startTime >= 2000){
+					startTime = System.currentTimeMillis();
 					wb.update();
 				}
-				ticker++;
 			}
 			this.requestFocus();
 		}
@@ -171,7 +172,7 @@ public class Perspective extends JFrame{
 			selectedObject = null;
 		}
 		selectedObject = (Cell)res[1];
-		if (selectedObject != null) {selectedObject.setAdditionalColor(Color.blue);}
+		if (selectedObject != null) {wb.toggle(selectedObject);}
 	}
 	public Object3D getSelectedObject() {return selectedObject;}
 

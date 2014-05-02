@@ -1,7 +1,7 @@
 package src.data_structures;
 
 import java.util.Random;
-import java.util.Stack;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import com.threed.jpct.Matrix;
 import com.threed.jpct.World;
@@ -9,7 +9,7 @@ import com.threed.jpct.World;
 public class CellManager {
 
 	private Cell[][][] grid;
-	private Stack<Cell> updates;
+	private ArrayBlockingQueue<Cell> updates;
 	private World world;
 	private Random rand;
 	private int size, cellSize;
@@ -18,7 +18,7 @@ public class CellManager {
 	public CellManager(int size, World w){
 		getColor = new RandomColor();
 		grid = new Cell[size][size][size];
-		updates = new Stack<Cell>();
+		updates = new ArrayBlockingQueue<Cell>(1000000);
 		rand = new Random();
 		this.size = size;
 		this.cellSize = CellSize.LARGE.getSize();
@@ -26,7 +26,7 @@ public class CellManager {
 		
 		populateGrid();
 		populateWorld();
-		InitialConditions.GRID.initialize(this);
+		InitialConditions.SAMSINIT.initialize(this);
 	}
 
 	private void populateGrid(){
@@ -65,15 +65,15 @@ public class CellManager {
 		}
 	}
 
-	private void handleNeighbors(Cell cell, boolean bool){
+	void handleNeighbors(Cell cell, boolean bool){
 		int[] coor = cell.getCoordinates();
 		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
 			for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
 				for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
 					int[] curCoor = {x, y, z};
-					if(inRange(curCoor) && !coorEquivalence(coor, curCoor) && !updates.contains(getCell(x, y, z))){
+					if(inRange(curCoor) && !coorEquivalence(coor, curCoor)){
 						Cell cur = getCell(x, y, z);
-						if(bool){updates.push(cur);}
+						if(bool && !updates.contains(getCell(x, y, z))){updates.add(cur);}
 						cur.incPop(bool);
 					}
 				}
@@ -174,15 +174,28 @@ public class CellManager {
 	public void update(){
 		Cell c;
 		boolean cond;
-		while(!updates.isEmpty()){
-			c = updates.pop();
+		int timer = 0;
+		while(!updates.isEmpty() && timer < 1){
+			c = updates.poll();
+//			String coor = c.getCoordinates().toString();
+//			System.out.println("updating: " + coor + " time: " + timer);
 			cond = Rules.THREEDGROWTH.apply(this, c);
 			handleNeighbors(c, cond);
+			timer++;
 		}
+	}
+	
+	public void toggle(Cell c){
+		boolean bool = c.toggle();
+		handleNeighbors(c, bool);
 	}
 	
 	public int getSize(){
 		return size;
+	}
+	
+	public int getCellSize(){
+		return cellSize;
 	}
 
 	public void seizurePlease() {

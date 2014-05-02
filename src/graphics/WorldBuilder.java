@@ -19,16 +19,18 @@ public class WorldBuilder {
 	private Perspective view;
 	private Timer time;
 	private boolean steveMode;
+	private int cellSize;
 
 	public WorldBuilder() throws Exception {
 		world = new World();
 		world.setAmbientLight(150, 150, 150);
 		world.setClippingPlanes(0, 5000);
 
-		cellManager = new CellManager(EdgeLength.SMALL.length(), world);
+		cellManager = new CellManager(EdgeLength.TEST.length(), world);
+		cellSize = cellManager.getCellSize();
 //		runRandom();
 
-		steveMode = true;
+		steveMode = false;
 		view = new Perspective(this, world, cellManager, steveMode);
 
 		Light light = new Light(world);
@@ -58,7 +60,7 @@ public class WorldBuilder {
 	}
 	
 	public void addBlockRight(Object3D selectedObject){
-		Cell cube = new Cell(CellSize.MEDIUM.getSize());
+		Cell cube = new Cell(cellSize);
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -71,7 +73,7 @@ public class WorldBuilder {
 	}
 
 	public void addBlockLeft(Object3D selectedObject){
-		Cell cube = new Cell(CellSize.MEDIUM.getSize());
+		Cell cube = new Cell(cellSize);
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -84,7 +86,7 @@ public class WorldBuilder {
 	}
 
 	public void addBlockAbove(Object3D selectedObject){
-		Cell cube = new Cell(CellSize.MEDIUM.getSize());
+		Cell cube = new Cell(cellSize);
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -97,7 +99,7 @@ public class WorldBuilder {
 	}
 
 	public void addBlockBelow(Object3D selectedObject){
-		Cell cube = new Cell(CellSize.MEDIUM.getSize());
+		Cell cube = new Cell(cellSize);
 		if (selectedObject != null) {
 			Matrix m = selectedObject.getTranslationMatrix();
 			if (m != null) {
@@ -107,6 +109,14 @@ public class WorldBuilder {
 				world.addObject(cube);
 			}
 		}
+	}
+	
+	public void update(){
+		cellManager.update();
+	}
+	
+	public void toggle(Cell c){
+		cellManager.toggle(c);
 	}
 
 	public static void main(String[] args) throws Exception {

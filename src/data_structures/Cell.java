@@ -18,7 +18,7 @@ public class Cell extends Object3D{
 
 	public Cell(int size) {
 		super(Primitives.getCube(size), true);
-		isAlive = false;
+		setAlive(false);
 		this.initSelf();
 	}
 	
@@ -65,5 +65,16 @@ public class Cell extends Object3D{
 	
 	public int[] getCoordinates(){
 		return coordinates;
+	}
+
+	public boolean toggle() {
+		if(isAlive){
+			isAlive = !isAlive;
+			setVisibility(false);
+		} else {
+			isAlive = !isAlive;
+			setVisibility(true);
+		}
+		return isAlive;
 	}
 }

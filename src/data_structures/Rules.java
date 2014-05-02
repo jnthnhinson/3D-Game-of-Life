@@ -6,22 +6,23 @@ public enum Rules {
 
 		@Override
 		public boolean apply(CellManager cm, Cell c) {
-			if (cm.totalNeighbors(c) <= 1 && c.isAlive()) {
+			if (c.numNeighbors() <= 1 && c.isAlive()) {
 				c.setAlive(false);
 				return true;
 			}
-			else if (cm.totalNeighbors(c) >= 5 && cm.totalNeighbors(c) < 8) {
+			else if (c.numNeighbors() >= 5 && c.numNeighbors() < 8) {
 				c.setAlive(true);
 				return true;
 			}
-			else if (cm.totalNeighbors(c) >= 8) {
+			else if (c.numNeighbors() >= 8) {
 				c.setAlive(false);
 				return true;
 			}
-			else if (cm.numFlatNeighbors(c) > 4) {
-				c.setAlive(false);
-				return true;
-			} return false;
+//			else if (cm.numFlatNeighbors(c) > 4) {
+//				c.setAlive(false);
+//				return true;
+//			} 
+			return false;
 		}
 		
 	};
