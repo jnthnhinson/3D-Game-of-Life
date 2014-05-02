@@ -1,64 +1,34 @@
 package src.graphics;
 
+import com.threed.jpct.Camera;
 import com.threed.jpct.SimpleVector;
 import com.threed.jpct.World;
 
 @SuppressWarnings("serial")
-public class SteveCamera extends GameCamera {
-	private final static float COLLISION_SPHERE_RADIUS = 8f;
-	private final static float PLAYER_HEIGHT = 30f;
-	private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
+public class SteveCamera extends GameCamera{
+	private final static float SPEED = 5f;
+	private final static float PLAYER_HEIGHT = 30f;	
 	private final static float GRAVITY = 4f;
-	private final static float MOVE_SPEED = 2.5f;
-	private final static float TURN_SPEED = 0.06f;
+	private final static float COLLISION_SPHERE_RADIUS = 8f;
+	private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
 	
-	private boolean left = false;
-	private boolean right = false;
-	private boolean up = false;
-	private boolean down = false;
-	private boolean forward = false;
-	private boolean backward = false;
-	private boolean jumping = false;
-	private boolean falling = false;
-	private boolean strafeLeft = false;
-	private boolean strafeRight = false;
-	private boolean tiltLeft = false;
-	private boolean tiltRight = false;
-	private boolean tiltUp = false;
-	private boolean tiltDown = false;
-	private boolean zoomOut = false;
+	private int jumping;
 
 	public SteveCamera(World world) {
 		super(world);
-		//setFOV(getMinFOV());
+		this.jumping = 0;
 	}
 
-	public void updateStatus(String dir) {
-		if(dir == "SL")			{strafeLeft = true;}
-		else if(dir == "SR")	{strafeRight = true;}
-		else if(dir == "F")		{forward = true;}
-		else if(dir == "B")		{backward = true;}
-		else if(dir == "U")		{jumping = true;}
-		//else if(dir == "D")		{zoomOut = true;}
-		else if(dir == "TL")	{tiltLeft = true;}
-		else if(dir == "TR")	{tiltRight = true;}
-		else if(dir == "TU")	{tiltUp = true;}
-		else if(dir == "TD")	{tiltDown = true;}
-		else if(dir == "L")		{left = true;}
-		else if(dir == "R")		{right = true;}
-	}
-	
 	public void performMovement() {
 		performGravity();
-		performOtherMovement();
-		resetBools();
+		jumping--;
 	}
-	
+
 	private void performGravity() {
 		SimpleVector camPos = getPosition();
 		camPos.add(new SimpleVector(0, PLAYER_HEIGHT/2f, 0));
 		SimpleVector dir;
-		if (jumping) {dir = new SimpleVector(0, -GRAVITY, 0);}
+		if (jumping > 0) {dir = new SimpleVector(0, -GRAVITY, 0);}
 		else {dir = new SimpleVector(0, GRAVITY, 0);}
 		dir = world.checkCollisionEllipsoid(camPos, dir, ELLIPSOID_RADIUS, 1);
 		camPos.add(new SimpleVector(0, -PLAYER_HEIGHT/2f, 0));
@@ -67,42 +37,32 @@ public class SteveCamera extends GameCamera {
 		camPos.add(dir);
 		setPosition(camPos);
 	}
-
-	private void performOtherMovement() {
-		boolean cameraChanged = false;
-
-		if (forward) {walk(true);cameraChanged = true;}
-		else if (backward) {walk(false);cameraChanged = true;}
-		if (left) {turn(false);}
-		if (right) {turn(true);}
-		if (tiltUp) {tilt(true);}
-		if (tiltDown) {tilt(false);}
-		if (strafeLeft) {strafe(false); cameraChanged = true;}
-		if (strafeRight) {strafe(true); cameraChanged = true;}
-		if (cameraChanged) {moveCamera(new SimpleVector(0, -1, 0), PLAYER_HEIGHT/2f);}
+	
+	public void updateStatus(String dir) {
+		if(dir == "SL"){this.moveCamera(Camera.CAMERA_MOVELEFT, SPEED);}
+		else if(dir == "SR"){this.moveCamera(Camera.CAMERA_MOVERIGHT, SPEED);}
+		else if(dir == "F"){this.moveCamera(Camera.CAMERA_MOVEIN, SPEED);}
+		else if(dir == "B"){this.moveCamera(Camera.CAMERA_MOVEOUT, SPEED);}
+		else if(dir == "U"){updateJump();}
+		else if(dir == "TL"){tiltCamera("TL");}
+		else if(dir == "TR"){tiltCamera("TR");}
+		else if(dir == "TU"){tilt(true);}
+		else if(dir == "TD"){tilt(false);}
+		else if(dir == "L"){turn(false);}
+		else if(dir == "R"){turn(true);}
 	}
 	
-	public void resetBools() {
-		strafeLeft = false;
-		strafeRight = false;
-		right = false;
-		left = false;
-		up = false;
-		down = false;
-		forward = false;
-		backward = false;
-		jumping = false;
-		falling = false;
-		strafeLeft = false;
-		strafeRight = false;
-		tiltLeft = false;
-		tiltRight = false;
-		tiltUp = false;
-		tiltDown = false;
-		zoomOut = false;
+	private void updateJump() {
+		if (jumping <= 0) {
+			jumping = 5;
+		}
 	}
 	
-	
-	
+	public void tiltCamera(String dir){
+		if(dir == "TL"){
+			rotateCameraZ((float)-.03);
+		} else if(dir == "TR"){
+			rotateCameraZ((float).03);
+		}
+	}
 }
-

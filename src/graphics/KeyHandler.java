@@ -8,10 +8,10 @@ import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
 public class KeyHandler implements KeyListener, ActionListener {
-	private int W, A, S, D, Q, E, SPACE, ESC, SHIFT, UP, DOWN, LEFT, RIGHT;
+	private int W, A, S, D, Q, E, SPACE, ESC, SHIFT, UP, DOWN, LEFT, RIGHT, CONTROL;
 	private boolean strafeLeft = false, strafeRight = false, forward = false, back = false,
 			tiltR = false, tiltL = false, tiltU = false, tiltD = false, shift = false, space = false, esc = false,
-			left = false, right = false;
+			left = false, right = false, control = false;
 
 	private Timer timer;
 	private Perspective perspective;
@@ -41,6 +41,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		DOWN = KeyEvent.VK_DOWN;
 		LEFT = KeyEvent.VK_LEFT;
 		RIGHT = KeyEvent.VK_RIGHT;
+		CONTROL = KeyEvent.VK_CONTROL;
 	}
 	
 	@Override
@@ -69,6 +70,8 @@ public class KeyHandler implements KeyListener, ActionListener {
 			camera.updateStatus("L");
 		} if(right == true){
 			camera.updateStatus("R");
+		} if(control == true){
+			camera.updateStatus("CTRL");
 		}
 	}
 
@@ -88,6 +91,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == UP) {tiltU = true;}
 		if (key == DOWN) {tiltD = true;}
 		if (key == ESC) { perspective.togglePause();}
+		if (key == CONTROL) {perspective.selectPointedObject();}
 	}
 	@Override
 	public void keyReleased(KeyEvent e){

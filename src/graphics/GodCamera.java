@@ -8,6 +8,7 @@ import com.threed.jpct.World;
 public class GodCamera extends GameCamera{
 	private final static float SPEED = 5f;
 	private final static float PLAYER_HEIGHT = 30f;	
+	
 	public GodCamera(World world) {
 		super(world);
 	}
@@ -36,6 +37,10 @@ public class GodCamera extends GameCamera{
 		else if(dir == "D"){this.fall();}
 		else if(dir == "TL"){tiltCamera("TL");}
 		else if(dir == "TR"){tiltCamera("TR");}
+		else if(dir == "TU"){tilt(true);}
+		else if(dir == "TD"){tilt(false);}
+		else if(dir == "L"){turn(false);}
+		else if(dir == "R"){turn(true);}
 	}
 	
 	public void tiltCamera(String dir){
