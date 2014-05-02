@@ -11,6 +11,7 @@ public class SteveCamera extends GameCamera{
 	private final static float GRAVITY = 4f;
 	private final static float COLLISION_SPHERE_RADIUS = 8f;
 	private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
+	private String id = "STEVE";
 	
 	private int jumping;
 

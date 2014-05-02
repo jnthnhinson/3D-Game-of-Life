@@ -27,7 +27,7 @@ import com.threed.jpct.World;
 public class Perspective extends JFrame{
 	private WorldBuilder wb;
 	private PauseMenu pauseMenu;
-	private GameCamera camera;
+	private GameCamera steveCamera, godCamera, camera;
 	private boolean showCursor;
 	private boolean paused;
 	private MouseHandler mh;
@@ -40,7 +40,7 @@ public class Perspective extends JFrame{
 	private final int windowx = 1280, windowy = 720;
 
 
-	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
+	public Perspective(WorldBuilder wb, World world, CellManager cellManager) {
 		setSize(windowx, windowy);
 		setVisible(true);
 		setLocationRelativeTo(null);
@@ -56,7 +56,7 @@ public class Perspective extends JFrame{
 		initBuffer();
 		initCanvas();
 		initPauseMenu();
-		initCamera(isSteveMode, cellManager);
+		initCamera();
 		initListeners();
 		hideCursor();
 
@@ -84,22 +84,23 @@ public class Perspective extends JFrame{
 	}
 	
 	private void initPauseMenu(){
-		this.pauseMenu = new PauseMenu(this, wb);
+		this.pauseMenu = new PauseMenu(this);
 		this.pauseMenu.setVisible(true);
 		this.paused = false;
 		this.add(pauseMenu);
 	}
 	
-	private void initCamera(boolean isSteveMode, CellManager cellManager) {
-		if (isSteveMode) 	{this.camera = new SteveCamera(world);}
-		else 			{this.camera = new GodCamera(world);}
+	private void initCamera() {
+		this.steveCamera = new SteveCamera(world);
+		this.godCamera = new GodCamera(world);
 
+		this.godCamera.setPosition(100, -75, 100);
+		this.steveCamera.setPosition(100, -75, 100);
+		
+		this.camera = godCamera;
 		world.setCameraTo(camera);
-		//camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);
-		//camera.lookAt(cellManager.getCell(0,0,0).getTransformedCenter());
-		camera.setPosition(100, -75, 100);
 	}
-
+	
 	private void initListeners(){
 		kh = new KeyHandler(this, camera);
 		mh = new MouseHandler(this, wb, camera);
@@ -110,6 +111,17 @@ public class Perspective extends JFrame{
 		this.addKeyListener(kh);
 		this.addMouseListener(mh);
 		this.addMouseMotionListener(mh);
+	}
+	
+	public void toggleCamera(){
+		System.out.println("TOGGLED CAMERA");
+		if(camera.equals(godCamera)){
+			world.setCameraTo(steveCamera);
+			camera = steveCamera;
+		} else {
+			world.setCameraTo(godCamera);
+			camera = godCamera;
+		}
 	}
 
 	protected void loop() throws Exception {

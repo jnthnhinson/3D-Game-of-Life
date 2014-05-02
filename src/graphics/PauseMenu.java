@@ -22,10 +22,8 @@ public class PauseMenu extends Panel{
 	private JToggleButton steve2God;
 	
 	private Perspective perspective;
-	private WorldBuilder wb;
 	
-	public PauseMenu(Perspective perspective, WorldBuilder wb){
-		this.wb = wb;
+	public PauseMenu(Perspective perspective){
 		this.perspective = perspective;
 		
 		initButtons();
@@ -81,13 +79,12 @@ public class PauseMenu extends Panel{
 		public void actionPerformed(ActionEvent e) {
 			if (steve2God.getText() == "Steve Mode"){
 				steve2God.setText("God Mode");
-				wb.setMode("god");
 			}
 			else if (steve2God.getText() == "God Mode"){
 				steve2God.setText("Steve Mode");
-				wb.setMode("steve");
 			}
-			
+			perspective.toggleCamera();
+			perspective.requestFocus();
 		}
 	}
 	

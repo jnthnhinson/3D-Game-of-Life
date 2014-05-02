@@ -16,37 +16,34 @@ import com.threed.jpct.util.Light;
 public class WorldBuilder {
 	private World world;
 	private CellManager cellManager;
-	private Perspective view;
+	private Perspective perspective;
 	private Timer time;
-	private boolean steveMode;
 	private int cellSize;
 
 	public WorldBuilder() throws Exception {
-		world = new World();
-		world.setAmbientLight(150, 150, 150);
-		world.setClippingPlanes(0, 5000);
-
+		this.initWorld();
+		
 		cellManager = new CellManager(EdgeLength.SMALL.length(), world);
 		cellSize = cellManager.getCellSize();
 //		runRandom();
 
-		steveMode = false;
-		view = new Perspective(this, world, cellManager, steveMode);
+		perspective = new Perspective(this, world, cellManager);
+		initLight();
 
-		Light light = new Light(world);
-		light.setPosition(new SimpleVector(0, -80, 0));
-		light.setIntensity(40, 25, 22);
-
-		view.loop();
+		perspective.loop();
 	}
 	
-	public void setMode(String type){
-		if (type == "god"){
-			steveMode = false;
-		}
-		else if (type == "steve") {
-			steveMode = true;
-		}
+	private void initWorld(){
+		world = new World();
+		world.setAmbientLight(150, 150, 150);
+		world.setClippingPlanes(0, 5000);
+		
+	}
+
+	private void initLight(){
+		Light light = new Light(world);
+		light.setPosition(new SimpleVector(0, -80, 0));
+		light.setIntensity(40, 25, 22);		
 	}
 	
 	private void runRandom() {

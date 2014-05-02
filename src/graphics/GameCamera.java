@@ -9,7 +9,53 @@ public class GameCamera extends Camera {
 	private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
 	private final static float MOVE_SPEED = 2.5f;
 	private final static float TURN_SPEED = 0.02f;
+	private String id = "";
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((playerDirection == null) ? 0 : playerDirection.hashCode());
+		result = prime * result
+				+ ((tempVector == null) ? 0 : tempVector.hashCode());
+		result = prime * result + ((world == null) ? 0 : world.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GameCamera other = (GameCamera) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (playerDirection == null) {
+			if (other.playerDirection != null)
+				return false;
+		} else if (!playerDirection.equals(other.playerDirection))
+			return false;
+		if (tempVector == null) {
+			if (other.tempVector != null)
+				return false;
+		} else if (!tempVector.equals(other.tempVector))
+			return false;
+		if (world == null) {
+			if (other.world != null)
+				return false;
+		} else if (!world.equals(other.world))
+			return false;
+		return true;
+	}
+
 	protected World world;
 	private Matrix playerDirection;
 	private SimpleVector tempVector=new SimpleVector();
