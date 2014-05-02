@@ -19,7 +19,6 @@ public class Cell extends Object3D{
 	public Cell(int size) {
 		super(Primitives.getCube(size), false);
 		this.initSelf();
-		setAlive(false);
 	}
 	
 	private void initSelf(){
@@ -29,6 +28,7 @@ public class Cell extends Object3D{
 		this.setAdditionalColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 		this.rotateY((float)(Math.PI*45)/180);
 		this.compile();
+		this.setVisibility(false);
 	}
 	
 	
