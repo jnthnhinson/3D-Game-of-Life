@@ -6,8 +6,7 @@ import com.threed.jpct.World;
 
 @SuppressWarnings("serial")
 public class GodCamera extends GameCamera{
-	private final static float SPEED = 5f;
-	private final static float PLAYER_HEIGHT = 30f;	
+	private final static float SPEED = 25f;
 	private String id = "GOD";
 	
 	public GodCamera(World world) {
