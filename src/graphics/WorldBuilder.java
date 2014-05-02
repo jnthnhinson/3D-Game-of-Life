@@ -5,6 +5,7 @@ import java.util.TimerTask;
 import src.data_structures.Cell;
 import src.data_structures.CellManager;
 import src.data_structures.CellSize;
+import src.data_structures.EdgeLength;
 
 import com.threed.jpct.Matrix;
 import com.threed.jpct.Object3D;
@@ -24,7 +25,7 @@ public class WorldBuilder {
 		world.setAmbientLight(150, 150, 150);
 		world.setClippingPlanes(0, 5000);
 
-		cellManager = new CellManager(10, world);
+		cellManager = new CellManager(EdgeLength.SMALL.length(), world);
 //		runRandom();
 
 		steveMode = false;
