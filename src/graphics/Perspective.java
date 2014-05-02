@@ -36,8 +36,8 @@ public class Perspective extends JFrame{
 	private World world;
 	private Canvas canvas;
 	private Cell selectedObject;
-	private final int windowx = 1280;
-	private final int windowy = 720;
+	private int ticker;
+	private final int windowx = 1280, windowy = 720;
 
 
 	public Perspective(WorldBuilder wb, World world, CellManager cellManager, boolean isSteveMode) {
@@ -49,6 +49,7 @@ public class Perspective extends JFrame{
 		
 		this.wb = wb;
 		this.world = world;
+		ticker = 0;
 
 		
 		initBuffer();
@@ -121,6 +122,10 @@ public class Perspective extends JFrame{
 				buffer.display(canvas.getGraphics());
 				canvas.repaint();
 				
+				if(ticker % 100 == 0){
+					wb.update();
+				}
+				ticker++;
 			}
 			this.requestFocus();
 		}
