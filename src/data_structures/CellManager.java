@@ -9,18 +9,17 @@ import com.threed.jpct.World;
 public class CellManager {
 
 	private Cell[][][] grid;
-	private ArrayBlockingQueue<Cell> updates;
 	private World world;
 	private Random rand;
-	private int size, cellSize;
+	private int size, cellSize, tick;
 	private RandomColor getColor;
 
 	public CellManager(int size, World w){
 		getColor = new RandomColor();
 		grid = new Cell[size][size][size];
-		updates = new ArrayBlockingQueue<Cell>(1000000);
 		rand = new Random();
 		this.size = size;
+		this.tick = 0;
 		this.cellSize = CellSize.LARGE.getSize();
 		this.world = w;
 		
@@ -65,22 +64,6 @@ public class CellManager {
 		}
 	}
 
-	void handleNeighbors(Cell cell, boolean bool){
-		int[] coor = cell.getCoordinates();
-		for(int x = coor[0] - 1; x <= coor[0] + 1; x++){
-			for(int y = coor[1] - 1; y <= coor[1] + 1; y++){
-				for(int z = coor[2] - 1; z <= coor[2] + 1; z++){
-					int[] curCoor = {x, y, z};
-					if(inRange(curCoor) && !coorEquivalence(coor, curCoor)){
-						Cell cur = getCell(x, y, z);
-						if(bool && !updates.contains(getCell(x, y, z))){updates.add(cur);}
-						cur.incPop(bool);
-					}
-				}
-			}
-		}
-	}
-
 	private int numCornerNeighbors(Cell cell){
 		int[] coor = cell.getCoordinates();
 		int num = 0;
@@ -115,8 +98,9 @@ public class CellManager {
 		return num;
 	}
 
-	int totalNeighbors(Cell cell){
-		return cell.numNeighbors();
+	int numNeighbors(Cell cell){
+		return numFlatNeighbors(cell) + numCornerNeighbors(cell);
+//		return cell.numNeighbors();
 	}
 
 
@@ -170,24 +154,48 @@ public class CellManager {
 	private int generateIndex() {
 		return (int) Math.floor(rand.nextDouble()*size);
 	}
-	
+
 	public void update(){
+		tick++;
 		Cell c;
 		boolean cond;
-		int timer = 0;
-		while(!updates.isEmpty() && timer < 1){
-			c = updates.poll();
+		for(int x = 0; x < size; x ++){
+			for(int y = 0; y < size; y++){
+				for(int z = 0; z < size; z++){
+					c = getCell(x, y, z);
+					if(tick % 4 == 0){
+						cond = Rules.THREEDGROWTH.apply(this, c);
+					} else {
+						c.nextStage();
+					}
+					
+				}
+			}
+		}
+	}
+	
+//	public void update(){
+//		System.out.println("Queue Size: " + updates.size());
+//		Cell c;
+//		boolean cond;
+//		int timer = 0;
+//		while(!updates.isEmpty() && timer < 1000){
+//			System.out.println("Queue Size: " + updates.size());
+//			c = updates.poll();
 //			String coor = c.getCoordinates().toString();
 //			System.out.println("updating: " + coor + " time: " + timer);
-			cond = Rules.THREEDGROWTH.apply(this, c);
-			handleNeighbors(c, cond);
-			timer++;
-		}
+//			cond = Rules.THREEDGROWTH.apply(this, c);
+//			handleNeighbors(c, cond);
+//			timer++;
+//		}
+//	}
+	
+	public void addToUpdates(Cell c){
+
 	}
 	
 	public void toggle(Cell c){
 		boolean bool = c.toggle();
-		handleNeighbors(c, bool);
 	}
 	
 	public int getSize(){

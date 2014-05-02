@@ -12,4 +12,9 @@ public class RandomColor{
 		partyColor = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
 		return partyColor;
 	}
+	
+	public static Color randCol(){
+		Random rand = new Random();
+		return new Color(rand.nextInt(256/2), rand.nextInt(256/2), rand.nextInt(256)/2);
+	}
 }

@@ -13,8 +13,9 @@ public enum InitialConditions {
 						System.out.println(c);
 
 						if (y % 2 == 0 || z % 2 != 0 ) {
-							c.setAlive(true);
-							cm.handleNeighbors(c, true);
+							c.turnOn();
+							c.nextStage();
+
 						}
 
 					}
@@ -33,8 +34,8 @@ public enum InitialConditions {
 						System.out.println(c);
 
 
-						c.setAlive(true);
-						cm.handleNeighbors(c, true);
+						c.turnOn();
+						c.nextStage();
 
 					}
 				}
@@ -47,8 +48,8 @@ public enum InitialConditions {
 			for(int x = 0; x < Math.pow(cm.getSize(), 3) * .5; x++){
 				int[] coor = cm.generateCoor();
 				Cell c = cm.getCell(coor[0], coor[1], coor[2]);
-				c.setAlive(true);
-				cm.handleNeighbors(c, true);
+				c.turnOn();
+				c.nextStage();
 			}
 			
 		}
@@ -64,8 +65,8 @@ public enum InitialConditions {
 						
 						if (Math.round(Math.random()*20)==1) {
 							System.out.println("made cell alive");
-                            c.setAlive(true);
-    						cm.handleNeighbors(c, true);
+                            c.turnOn();
+                            c.nextStage();
                         }
 						
 					}

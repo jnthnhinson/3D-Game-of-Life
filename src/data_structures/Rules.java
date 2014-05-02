@@ -6,20 +6,17 @@ public enum Rules {
 
 		@Override
 		public boolean apply(CellManager cm, Cell c) {
-			if (c.numNeighbors() <= 1 && c.isAlive()) {
-				c.setAlive(false);
-				return true;
+			if (cm.numNeighbors(c) <= 1 && c.isAlive()) {
+				c.turnOff();
 			}
-			else if (c.numNeighbors() >= 5 && c.numNeighbors() < 8) {
-				c.setAlive(true);
-				return true;
+			else if (cm.numNeighbors(c) >= 5 && cm.numNeighbors(c) < 8 && c.getStage() == null) {
+				c.turnOn();
 			}
-			else if (c.numNeighbors() >= 8) {
-				c.setAlive(false);
-				return true;
+			else if (cm.numNeighbors(c) >= 8 && c.isAlive()) {
+				c.turnOff();
 			}
 //			else if (cm.numFlatNeighbors(c) > 4) {
-//				c.setAlive(false);
+//				c.turnOff();
 //				return true;
 //			} 
 			return false;

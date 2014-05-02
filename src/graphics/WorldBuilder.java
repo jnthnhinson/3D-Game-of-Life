@@ -26,7 +26,7 @@ public class WorldBuilder {
 		world.setAmbientLight(150, 150, 150);
 		world.setClippingPlanes(0, 5000);
 
-		cellManager = new CellManager(EdgeLength.TEST.length(), world);
+		cellManager = new CellManager(EdgeLength.SMALL.length(), world);
 		cellSize = cellManager.getCellSize();
 //		runRandom();
 
