@@ -17,45 +17,51 @@ import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
 public class PauseMenu extends Panel{
-	private PauseMenu menu;
-	private ArrayList<JButton> buttons;
-	private Border lineBorder;
-	private Perspective perspective;
-	private WorldBuilder wb;
+	private JButton closeMenuButton, quitButton, partyButton;
+	private JTextArea instructions;
 	private JToggleButton steve2God;
 	
-	private JButton partyButton;
+	private Perspective perspective;
+	private WorldBuilder wb;
 	
 	public PauseMenu(Perspective perspective, WorldBuilder wb){
-		menu = this;
-		this.setPreferredSize(new Dimension(400,250));
 		this.wb = wb;
 		this.perspective = perspective;
-		buttons = new ArrayList<JButton>();
 		
-		JButton closeMenuButton = new JButton("Close Menu");
-		JButton quitButton = new JButton("Exit Game");
+		initButtons();
+		initInstructions();
+		addComponents();
+	}
+
+	
+	public void initButtons(){
+		closeMenuButton = new JButton("Close Menu");
+		quitButton = new JButton("Exit Game");
 		steve2God = new JToggleButton("Steve Mode");
 		partyButton = new JButton("Party On");
 
-		JTextArea instructions = new JTextArea(" Forwards (w)\n Backwards (s)\n Left (a)\n Right(d)\n Rotate Left (q)\n Rotate Right (e)\n\n Ascend (space)\n Descend (shift) ");
-		lineBorder = BorderFactory.createLineBorder(Color.black);
-		instructions.setBorder(lineBorder);
-		
 		closeMenuButton.addActionListener(new closeMenu());
 		quitButton.addActionListener(new exitGame());
 		steve2God.addActionListener(new steve2God());
 		partyButton.addActionListener(new toggleParty());
 
-
-		buttons.add(closeMenuButton);buttons.add(quitButton); buttons.add(partyButton);
+	}
+	
+	public void addComponents(){
+		this.add(closeMenuButton);
+		this.add(quitButton);
 		this.add(steve2God);
-		for(JButton button: buttons){
-			this.add(button);
-		}
+		this.add(partyButton);
 		this.add(instructions);
 	}
+	
+	
+	public void initInstructions(){
+		instructions = new JTextArea(" Forwards (w)\n Backwards (s)\n Left (a)\n Right(d)\n Rotate Left (q)\n Rotate Right (e)\n\n Ascend (space)\n Descend (shift) ");
+		instructions.setBorder(BorderFactory.createLineBorder(Color.black));
 
+	}
+	
 	private class closeMenu implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
