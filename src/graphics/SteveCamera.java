@@ -12,12 +12,10 @@ public class SteveCamera extends GameCamera{
 	private final static float COLLISION_SPHERE_RADIUS = 8f;
 	private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
 	
-	private Perspective perspective;
 	private int jumping;
 
-	public SteveCamera(World world, Perspective perspective) {
+	public SteveCamera(World world) {
 		super(world);
-		this.perspective = perspective;
 		this.jumping = 0;
 	}
 
@@ -46,7 +44,6 @@ public class SteveCamera extends GameCamera{
 		else if(dir == "F"){this.moveCamera(Camera.CAMERA_MOVEIN, SPEED);}
 		else if(dir == "B"){this.moveCamera(Camera.CAMERA_MOVEOUT, SPEED);}
 		else if(dir == "U"){updateJump();}
-		else if(dir == "D"){perspective.selectPointedObject();}
 		else if(dir == "TL"){tiltCamera("TL");}
 		else if(dir == "TR"){tiltCamera("TR");}
 		else if(dir == "TU"){tilt(true);}

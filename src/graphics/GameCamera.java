@@ -8,7 +8,7 @@ public class GameCamera extends Camera {
 	private final static float PLAYER_HEIGHT = 30f;
 	private final static SimpleVector ELLIPSOID_RADIUS = new SimpleVector(COLLISION_SPHERE_RADIUS,PLAYER_HEIGHT/2f,COLLISION_SPHERE_RADIUS);
 	private final static float MOVE_SPEED = 2.5f;
-	private final static float TURN_SPEED = 0.03f;
+	private final static float TURN_SPEED = 0.02f;
 	
 	protected World world;
 	private Matrix playerDirection;
