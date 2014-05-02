@@ -120,6 +120,7 @@ public class Perspective extends JFrame{
 				buffer.update();
 				buffer.display(canvas.getGraphics());
 				canvas.repaint();
+				
 			}
 			this.requestFocus();
 		}

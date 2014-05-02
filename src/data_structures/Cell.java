@@ -26,7 +26,7 @@ public class Cell extends Object3D{
 		Random rand = new Random();
 		this.setSpecularLighting(true);
 		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
-		this.setTransparency(0);
+//		this.setTransparency(0);
 		this.setAdditionalColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 		this.rotateY((float)(Math.PI*45)/180);
 		this.compile();
@@ -36,6 +36,10 @@ public class Cell extends Object3D{
 	public void incPop(boolean pol){
 		if(pol){pop++;
 		}else{pop--;}
+	}
+	
+	public int numNeighbors(){
+		return pop;
 	}
 	
 	public void setCoordinates(int x, int y, int z){
@@ -48,23 +52,15 @@ public class Cell extends Object3D{
 		System.out.println(coordinates[0] + " : " + coordinates[1] + " : " + coordinates[2]);
 	}
 	
-	public void birthCell(Cell c){
-		c.isAlive = true;
+	public boolean isAlive(){
+		return isAlive;
 	}
 	
-	public void murderCell(Cell c) {
-		c.isAlive = false;
-	}
-	
-	public boolean isDead(Cell c){
-		return c.isAlive;
-	}
-	
-	public boolean isAlive(Cell c) {
-		if (c.isAlive = true){
-			return true;
+	public void setAlive(boolean bool){
+		if(bool != isAlive){
+			isAlive = bool;
+			setVisibility(bool);
 		}
-		else {return false;}
 	}
 	
 	public int[] getCoordinates(){

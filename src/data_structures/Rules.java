@@ -5,23 +5,27 @@ public enum Rules {
 	THREEDGROWTH{
 
 		@Override
-		public void apply(CellManager cm, Cell c) {
-			if (cm.totalNeighbors(c) <= 1 && c.isDead(c)) {
-				c.murderCell(c);
+		public boolean apply(CellManager cm, Cell c) {
+			if (cm.totalNeighbors(c) <= 1 && c.isAlive()) {
+				c.setAlive(false);
+				return true;
 			}
 			else if (cm.totalNeighbors(c) >= 5 && cm.totalNeighbors(c) < 8) {
-				c.birthCell(c);
+				c.setAlive(true);
+				return true;
 			}
 			else if (cm.totalNeighbors(c) >= 8) {
-				c.murderCell(c);
+				c.setAlive(false);
+				return true;
 			}
 			else if (cm.numFlatNeighbors(c) > 4) {
-				c.murderCell(c);
-			}
+				c.setAlive(false);
+				return true;
+			} return false;
 		}
 		
 	};
 	
-	public abstract void apply(CellManager cm, Cell c);
+	public abstract boolean apply(CellManager cm, Cell c);
 
 }
