@@ -1,4 +1,4 @@
-package src.graphics;
+package cameras;
 
 import com.threed.jpct.*;
 

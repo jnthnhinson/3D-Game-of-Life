@@ -1,4 +1,4 @@
-package src.graphics;
+package listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.Timer;
+
+import src.graphics.Perspective;
+import cameras.GameCamera;
 
 public class KeyHandler implements KeyListener, ActionListener {
 	private int W, A, S, D, Q, E, C, SPACE, ESC, SHIFT, UP, DOWN, LEFT, RIGHT, CONTROL;

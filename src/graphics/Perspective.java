@@ -10,10 +10,16 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import listeners.KeyHandler;
+import listeners.MouseHandler;
+
 import org.lwjgl.opengl.Display;
 
 import src.data_structures.Cell;
 import src.data_structures.CellManager;
+import cameras.GameCamera;
+import cameras.GodCamera;
+import cameras.SteveCamera;
 
 import com.threed.jpct.Camera;
 import com.threed.jpct.FrameBuffer;

@@ -1,4 +1,4 @@
-package src.graphics;
+package listeners;
 
 import java.awt.Point;
 import java.awt.Robot;
@@ -9,6 +9,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.Timer;
+
+import src.graphics.Perspective;
+import cameras.GameCamera;
 
 public class MouseHandler extends MouseMotionAdapter implements MouseListener, ActionListener{
 	Perspective view;
