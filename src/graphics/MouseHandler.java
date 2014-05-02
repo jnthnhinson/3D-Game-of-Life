@@ -38,7 +38,6 @@ public class MouseHandler extends MouseMotionAdapter implements MouseListener, A
 		if(stopped == false){
 			updateMouseMovement(e);
 			camera.rotateView(mouseOffsetX, mouseOffsetY);
-			System.out.println("have focus");
 		}
 	}
 
