@@ -8,7 +8,7 @@ import com.threed.jpct.World;
 public class GodCamera extends GameCamera{
 	private final static float SPEED = 5f;
 	private final static float PLAYER_HEIGHT = 30f;	
-	public GodCamera(World world) {
+	public GodCamera(World world, Perspective perspective) {
 		super(world);
 	}
 

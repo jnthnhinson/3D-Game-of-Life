@@ -89,8 +89,8 @@ public class Perspective extends JFrame{
 	}
 	
 	private void initCamera(boolean isSteveMode, CellManager cellManager) {
-		if (isSteveMode) 	{this.camera = new SteveCamera(world);}
-		else 			{this.camera = new GodCamera(world);}
+		if (isSteveMode) 	{this.camera = new SteveCamera(world, this);}
+		else 			{this.camera = new GodCamera(world, this);}
 
 		world.setCameraTo(camera);
 		camera.moveCamera(Camera.CAMERA_MOVEOUT, 100);

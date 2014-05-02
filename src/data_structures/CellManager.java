@@ -31,7 +31,7 @@ public class CellManager {
 		for(int x = 0; x < size; x ++){
 			for(int y = 0; y < size; y++){
 				for(int z = 0; z < size; z++){
-					Cell c = new Cell(CellSize.SMALL.getSize());
+					Cell c = new Cell(CellSize.LARGE.getSize());
 					System.out.println(x + " : " + y + " : " + z);
 					this.grid[x][y][z] = c;
 					c.setCoordinates(x, y, z);
@@ -41,7 +41,7 @@ public class CellManager {
 	}
 
 	private void populateWorld(){
-		float dist = CellSize.SMALL.getSize() * (float)2.3;
+		float dist = CellSize.LARGE.getSize() * (float)2.3;
 		float newx = 0; float newy = 0; float newz = 0;
 		Cell c;
 
