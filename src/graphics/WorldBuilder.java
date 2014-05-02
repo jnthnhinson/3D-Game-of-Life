@@ -46,7 +46,7 @@ public class WorldBuilder {
 		light.setIntensity(40, 25, 22);		
 	}
 	
-	private void runRandom() {
+	public void runParty() {
 		time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask(){
 			@Override
@@ -54,6 +54,9 @@ public class WorldBuilder {
 				cellManager.seizurePlease();
 			}
 		},100,9000);
+	}
+	public void stopParty(){
+		time = new Timer();
 	}
 	
 	public void addBlockRight(Object3D selectedObject){

@@ -34,15 +34,14 @@ public class Perspective extends JFrame{
 	private WorldBuilder wb;
 	private PauseMenu pauseMenu;
 	private GameCamera steveCamera, godCamera, camera;
-	private boolean showCursor;
-	private boolean paused;
+	private boolean showCursor, paused;
 	private MouseHandler mh;
 	private KeyHandler kh;
 	private FrameBuffer buffer;
 	private World world;
 	private Canvas canvas;
 	private Cell selectedObject;
-	private long startTime, differential;
+	private long startTime, delay;
 	private final int windowx = 1280, windowy = 720;
 
 
@@ -56,8 +55,9 @@ public class Perspective extends JFrame{
 		
 		this.wb = wb;
 		this.world = world;
+		
 		startTime = System.currentTimeMillis();
-
+		delay = 2000;
 		
 		initBuffer();
 		initCanvas();
@@ -85,7 +85,6 @@ public class Perspective extends JFrame{
 		canvas = new Canvas();
 		canvas.setVisible(true);
 		canvas = buffer.enableGLCanvasRenderer();
-		
 		this.add(canvas);
 	}
 	
@@ -119,16 +118,6 @@ public class Perspective extends JFrame{
 		this.addMouseMotionListener(mh);
 	}
 	
-	public void toggleCamera(){
-		if(camera.equals(godCamera)){
-			world.setCameraTo(steveCamera);
-			camera = steveCamera;
-		} else {
-			world.setCameraTo(godCamera);
-			camera = godCamera;
-		}
-	}
-
 	protected void loop() throws Exception {
 		while (isShowing()) {
 			if(!paused){
@@ -141,7 +130,7 @@ public class Perspective extends JFrame{
 				buffer.display(canvas.getGraphics());
 				canvas.repaint();
 				
-				if(System.currentTimeMillis() - startTime >= 2000){
+				if(System.currentTimeMillis() - startTime >= delay){
 					startTime = System.currentTimeMillis();
 					wb.update();
 				}
@@ -154,6 +143,20 @@ public class Perspective extends JFrame{
 		System.exit(0);
 	}
 
+	public void changeSpeed(int speed){
+		this.delay = speed;
+	}
+	
+	public void toggleCamera(){
+		if(camera.equals(godCamera)){
+			world.setCameraTo(steveCamera);
+			camera = steveCamera;
+		} else {
+			world.setCameraTo(godCamera);
+			camera = godCamera;
+		}
+	}
+	
 	public void togglePause(){
 		toggleCursor();
 		paused = !paused;
