@@ -25,6 +25,7 @@ public class PauseMenu extends Panel{
 	
 	public PauseMenu(Perspective perspective){
 		this.perspective = perspective;
+		this.setBackground(Color.GRAY);
 		
 		initButtons();
 		initInstructions();
@@ -37,6 +38,13 @@ public class PauseMenu extends Panel{
 		steve2God = new JToggleButton("Steve Mode");
 		partyButton = new JButton("Party On");
 
+		quitButton.setBackground(Color.BLACK);
+		steve2God.setBackground(Color.BLACK);
+		partyButton.setBackground(Color.BLACK);
+		quitButton.setForeground(Color.WHITE);
+		steve2God.setForeground(Color.WHITE);
+		partyButton.setForeground(Color.WHITE);
+		
 		quitButton.addActionListener(new exitGame());
 		steve2God.addActionListener(new steve2God());
 		partyButton.addActionListener(new toggleParty());
