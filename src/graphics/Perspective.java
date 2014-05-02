@@ -45,6 +45,7 @@ public class Perspective extends JFrame{
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("The Game of Life - 3D");
 		getFocusableWindowState();
 		
 		this.wb = wb;
