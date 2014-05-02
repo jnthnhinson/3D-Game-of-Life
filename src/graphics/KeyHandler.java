@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
 public class KeyHandler implements KeyListener, ActionListener {
-	private int W, A, S, D, Q, E, SPACE, ESC, SHIFT, UP, DOWN, LEFT, RIGHT, CONTROL;
+	private int W, A, S, D, Q, E, C, SPACE, ESC, SHIFT, UP, DOWN, LEFT, RIGHT, CONTROL;
 	private boolean strafeLeft = false, strafeRight = false, forward = false, back = false,
 			tiltR = false, tiltL = false, tiltU = false, tiltD = false, shift = false, space = false, esc = false,
 			left = false, right = false, control = false;
@@ -16,7 +16,6 @@ public class KeyHandler implements KeyListener, ActionListener {
 	private Timer timer;
 	private Perspective perspective;
 	private GameCamera camera;
-	private PauseMenu  menu;
 	
 	public KeyHandler(Perspective perspective, GameCamera camera){
 		this.timer = new Timer(10, this);
@@ -33,6 +32,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		S = KeyEvent.VK_S;
 		D = KeyEvent.VK_D;
 		Q = KeyEvent.VK_Q;
+		C = KeyEvent.VK_C;
 		E = KeyEvent.VK_E;
 		ESC = KeyEvent.VK_ESCAPE;
 		SPACE = KeyEvent.VK_SPACE;
@@ -84,6 +84,7 @@ public class KeyHandler implements KeyListener, ActionListener {
 		if (key == S) {back = true; }
 		if (key == Q) {tiltL = true; }
 		if (key == E) {tiltR = true; }
+		if (key == C) {perspective.toggleCamera(); System.out.println("pressed c");}
 		if (key == SPACE) {space = true; }
 		if (key == SHIFT) {shift = true; }
 		if (key == LEFT) {left = true;}

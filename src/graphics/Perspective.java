@@ -103,7 +103,7 @@ public class Perspective extends JFrame{
 	
 	private void initListeners(){
 		kh = new KeyHandler(this, camera);
-		mh = new MouseHandler(this, wb, camera);
+		mh = new MouseHandler(this, camera);
 
 		canvas.addKeyListener(kh);
 		canvas.addMouseListener(mh);
@@ -114,7 +114,6 @@ public class Perspective extends JFrame{
 	}
 	
 	public void toggleCamera(){
-		System.out.println("TOGGLED CAMERA");
 		if(camera.equals(godCamera)){
 			world.setCameraTo(steveCamera);
 			camera = steveCamera;
