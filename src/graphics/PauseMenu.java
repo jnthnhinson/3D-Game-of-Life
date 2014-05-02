@@ -17,7 +17,7 @@ import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
 public class PauseMenu extends Panel{
-	private JButton closeMenuButton, quitButton, partyButton;
+	private JButton quitButton, partyButton;
 	private JTextArea instructions;
 	private JToggleButton steve2God;
 	
@@ -33,12 +33,10 @@ public class PauseMenu extends Panel{
 
 	
 	public void initButtons(){
-		closeMenuButton = new JButton("Close Menu");
 		quitButton = new JButton("Exit Game");
 		steve2God = new JToggleButton("Steve Mode");
 		partyButton = new JButton("Party On");
 
-		closeMenuButton.addActionListener(new closeMenu());
 		quitButton.addActionListener(new exitGame());
 		steve2God.addActionListener(new steve2God());
 		partyButton.addActionListener(new toggleParty());
@@ -46,7 +44,6 @@ public class PauseMenu extends Panel{
 	}
 	
 	public void addComponents(){
-		this.add(closeMenuButton);
 		this.add(quitButton);
 		this.add(steve2God);
 		this.add(partyButton);
@@ -58,13 +55,6 @@ public class PauseMenu extends Panel{
 		instructions = new JTextArea(" Forwards (w)\n Backwards (s)\n Left (a)\n Right(d)\n Rotate Left (q)\n Rotate Right (e)\n\n Ascend (space)\n Descend (shift) ");
 		instructions.setBorder(BorderFactory.createLineBorder(Color.black));
 
-	}
-	
-	private class closeMenu implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			perspective.togglePause();
-		}
 	}
 	
 	private class exitGame implements ActionListener{
