@@ -27,6 +27,7 @@ public class Cell extends Object3D{
 		Random rand = new Random();
 		stage = 0;
 		this.setSpecularLighting(true);
+		this.setTexture("RESOURCES.textures.dirt.png");
 		this.setCollisionMode(Object3D.COLLISION_CHECK_OTHERS);
 		this.setColor(new Color(rand.nextInt(256/2), rand.nextInt(256/2), rand.nextInt(256/2)));
 		this.rotateY((float)(Math.PI*45)/180);

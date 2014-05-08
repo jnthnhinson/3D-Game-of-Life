@@ -15,6 +15,9 @@ public enum Rules {
 			else if (cm.numNeighbors(c) >= 8 && c.isAlive()) {
 				c.turnOff();
 			}
+			else if (cm.numFlatNeighbors(c) > 4  && c.isAlive()) {
+				c.turnOff();
+			}
 		}
 
 	},

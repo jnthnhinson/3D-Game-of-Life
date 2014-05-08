@@ -155,6 +155,7 @@ public class Perspective extends JFrame{
 			world.setCameraTo(godCamera);
 			camera = godCamera;
 		}
+		initListeners();
 	}
 	
 	public void togglePause(){

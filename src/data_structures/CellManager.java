@@ -25,7 +25,7 @@ public class CellManager {
 		this.cellSize = CellSize.LARGE.getSize();
 		this.world = w;
 		
-		rule = Rules.ZURG1;
+		rule = Rules.GROWTH;
 		condition = InitialConditions.SAMSINIT;
 		
 		populateGrid();
@@ -170,10 +170,6 @@ public class CellManager {
 //			timer++;
 //		}
 //	}
-	
-	public void addToUpdates(Cell c){
-
-	}
 	
 	public void toggle(Cell c){
 		boolean bool = c.toggle();

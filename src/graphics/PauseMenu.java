@@ -94,7 +94,7 @@ public class PauseMenu extends Panel{
 				cameraToggle.setText("Steve Mode");
 			}
 			perspective.toggleCamera();
-			perspective.requestFocus();
+//			perspective.requestFocus();
 		}
 	}
 	
